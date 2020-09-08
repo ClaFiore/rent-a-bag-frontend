@@ -2,22 +2,21 @@ document.addEventListener("DOMContentLoaded", () => {
 
     let bagsURL ='http://localhost:3000/handbags/'
     let usersURL = 'http://localhost:3000/users/'
+    let userHandbagsURL = 'http://localhost:3000/user_handbags'
     let signUpForm = document.querySelector('#sign-up')
     let signLoginDiv = document.querySelector('#signup-login')
     
+    const containerDiv = document.querySelector('#container')
+    
 
-
-    function getBags(){
+    function getBags(currentUserId){
     fetch(bagsURL)
     .then(resp => resp.json())
-    .then(bags => renderBags(bags))}
+    .then(bags => renderBags(bags, currentUserId))}
 
 
-    function renderBags(bags){
-        bags.forEach(bag =>
-            {
-        renderBag(bag)} 
-        
+    function renderBags(bags, currentUserId){
+        bags.forEach(bag => renderBag(bag, currentUserId)  
     )}
     
 
@@ -83,6 +82,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     function createUser(form){
         let formBalance = parseInt(form.balance.value)
+        let user = {name: form.name.value,
+            email: form.email.value,
+            address: form.address.value,
+            balance: formBalance}
         fetch(usersURL, {
             method: 'POST',
             headers: {
@@ -90,18 +93,14 @@ document.addEventListener("DOMContentLoaded", () => {
                 "Accept": "application/json"
             },
             body: JSON.stringify({
-                name: form.name.value,
-                email: form.email.value,
-                address: form.address.value,
-                balance: formBalance
-
+                user
             })
         })
         .then(resp => resp.json())
-        .then(user => 
-            console.log(user),
-            getBags()
-            
+        .then(user => {
+            let currentUserId = user.id
+            getBags(currentUserId)
+        }
         )}
 
 
@@ -130,30 +129,100 @@ function logIn(e){
             value="Login"
             class="submit"
           />`
-    loginForm.addEventListener('submit', (e) => {
-        e.preventDefault()
-        loginUser(loginForm)
-        loginForm.remove()
-    })
+    
+        loginForm.addEventListener('submit', (e) => {
+            e.preventDefault()
+            loginUser(loginForm)
+            loginForm.remove()
+            // getBags(currentUserId)
+         })
 }
 
 function loginUser(form){
     fetch(usersURL)
     .then(resp => resp.json())
-    .then(users => 
-        users.forEach(user => { 
+    .then(users => users.forEach(user => { 
            if (user.email === form.email.value)
            {let currentUserId = user.id
-            console.log(currentUserId)}  
+            getBags(currentUserId)} 
         })
-        )
-
-}    
+    )}
  
 
-    function renderBag(bag){
-        console.log('hello')
+    function renderBag(bag, currentUserId){
+        
+        let bagDiv = document.createElement('div')
+            bagDiv.className = 'card'
+        let imageDiv = document.createElement('div')
+        let imageBag = document.createElement('img')
+            imageBag.className = 'image-avatar'
+            imageBag.src = bag.image
+            imageBag.width = '100'
+            imageBag.height = '100'
+        let priceP = document.createElement('p')
+            priceP.innerText = '$ ' + bag.price
+        let designerh3 = document.createElement('h3')
+            designerh3.innerText = bag.designer
+        let viewDiv = document.createElement('div')
+            viewDiv.className = 'view-button-div'
+        let viewBtn = document.createElement('button')
+            viewBtn.innerText = 'View Me'
+            viewBtn.addEventListener('click', () => displaySingleBag(bag, currentUserId))
+
+        viewDiv.append(viewBtn)
+        imageDiv.append(imageBag)
+        bagDiv.append(designerh3, imageDiv, priceP, viewDiv)
+        containerDiv.append(bagDiv)
     }
     
-    
+    function displaySingleBag(bag, currentUserId){
+        let viewBagDiv = document.querySelector('#view-bag')
+
+        containerDiv.style.display = 'none'
+        let imgDiv = document.createElement('div')
+        let image = document.createElement('img')
+        image.src = bag.image
+        image.width = 300
+        image.height = 300
+        let detailsDiv = document.createElement('div')
+
+        let h3designer = document.createElement('h3')
+            h3designer.innerText = bag.designer
+        let pBagType = document.createElement('p')
+            pBagType.innerText = bag.bag_type
+        let pColor = document.createElement('p')
+            pColor.innerText = bag.color
+        let pFabric = document.createElement('p')
+            pFabric.innerText = bag.fabric
+        let pPrice = document.createElement('p')
+            pPrice.innerText = bag.price
+
+        let rentBtn = document.createElement('button')
+            rentBtn.innerText = 'Rent Me'
+            rentBtn.addEventListener('click', (e) => rentABag(bag, currentUserId))
+
+        let homeBtn = document.createElement('button')
+            homeBtn.innerText = 'All Handbags'
+            homeBtn.addEventListener('click', () => {
+                viewBagDiv.innerHTML = ""
+                containerDiv.style.display = 'block'
+            })
+        
+        detailsDiv.append(h3designer, pBagType, pColor, pFabric, pPrice, rentBtn, homeBtn)
+        imgDiv.append(image)
+        
+        viewBagDiv.append(imgDiv, detailsDiv)
+    }
+
+    function rentABag(bag, currentUserId){
+        let configObj = {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+            body: JSON.stringify({user_id: currentUserId, handbag_id: bag.id})
+        }
+        fetch(userHandbagsURL, configObj)
+        .then(res => res.json())
+        .then(console.log)
+    }
+
 })
