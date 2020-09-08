@@ -3,8 +3,12 @@ document.addEventListener("DOMContentLoaded", () => {
     let bagsURL ='http://localhost:3000/handbags/'
     let usersURL = 'http://localhost:3000/users/'
     let userHandbagsURL = 'http://localhost:3000/user_handbags'
+
     let signUpForm = document.querySelector('#sign-up')
     let signLoginDiv = document.querySelector('#signup-login')
+    let topnav = document.querySelector('.topnav')
+    let listedBtn = document.querySelector('#listed-btn')
+    let rentedBtn = document.querySelector('#rented-btn')
     
     const containerDiv = document.querySelector('#container')
     
@@ -144,13 +148,17 @@ function loginUser(form){
     .then(users => users.forEach(user => { 
            if (user.email === form.email.value)
            {let currentUserId = user.id
-            getBags(currentUserId)} 
+
+            getBags(currentUserId),
+            myListedButton(user),
+            myRentedBags(user)} 
         })
     )}
  
 
     function renderBag(bag, currentUserId){
-        
+        topnav.style.display = 'block'
+        if (bag.lister_id !== currentUserId){
         let bagDiv = document.createElement('div')
             bagDiv.className = 'card'
         let imageDiv = document.createElement('div')
@@ -172,10 +180,12 @@ function loginUser(form){
         viewDiv.append(viewBtn)
         imageDiv.append(imageBag)
         bagDiv.append(designerh3, imageDiv, priceP, viewDiv)
-        containerDiv.append(bagDiv)
+        containerDiv.append(bagDiv)}
     }
     
     function displaySingleBag(bag, currentUserId){
+        
+        
         let viewBagDiv = document.querySelector('#view-bag')
 
         containerDiv.style.display = 'none'
@@ -208,6 +218,7 @@ function loginUser(form){
                 containerDiv.style.display = 'block'
             })
         
+        
         detailsDiv.append(h3designer, pBagType, pColor, pFabric, pPrice, rentBtn, homeBtn)
         imgDiv.append(image)
         
@@ -225,4 +236,107 @@ function loginUser(form){
         .then(console.log)
     }
 
+    function myListedButton(user){
+        listedBtn.addEventListener('click', (e) => {
+            let div = document.querySelector('#view-listed-bags')
+            containerDiv.style.display = 'none'
+
+            user.listed_bags.forEach(bag => {
+            let bagDiv = document.createElement('div')
+            bagDiv.className = 'card'
+
+            let imageDiv = document.createElement('div')
+            let imageBag = document.createElement('img')
+            imageBag.className = 'image-avatar'
+            imageBag.src = bag.image
+            imageBag.width = '100'
+            imageBag.height = '100'
+
+        let priceP = document.createElement('p')
+            priceP.innerText = '$ ' + bag.price
+
+        let designerh3 = document.createElement('h3')
+            designerh3.innerText = bag.designer
+
+        let viewDiv = document.createElement('div')
+            viewDiv.className = 'view-button-div'
+        let editBtn = document.createElement('button')
+            editBtn.innerText = 'Update'
+            editBtn.addEventListener('click', (e) => 
+            console.log(e)
+            // editMyBag(bag,user)
+            )
+
+            let deleteBtn = document.createElement('button')
+            deleteBtn.innerText = 'Delete'
+            deleteBtn.addEventListener('click', (e) => {
+                console.log(e)
+                deleteMyBag(bag, bagDiv)
+            })
+            
+
+        viewDiv.append(editBtn, deleteBtn)
+        imageDiv.append(imageBag)
+        bagDiv.append(designerh3, imageDiv, priceP, viewDiv)
+        div.append(bagDiv)
+        console.log(user.listed_bags)
+
+            })
+        })
+    }
+
+function deleteMyBag(bag,bagDiv){
+    fetch(bagsURL + bag.id, {
+        method: "DELETE"
+    })
+    .then(bagDiv.remove(),
+    console.log)
+}
+
+function myRentedBags(user){
+    rentedBtn.addEventListener('click', (e) => {
+        console.log(e)
+
+        let div = document.querySelector('#view-listed-bags')
+            containerDiv.style.display = 'none'
+
+            user.handbags.forEach(bag => {
+            let bagDiv = document.createElement('div')
+            bagDiv.className = 'card'
+
+            let imageDiv = document.createElement('div')
+            let imageBag = document.createElement('img')
+            imageBag.className = 'image-avatar'
+            imageBag.src = bag.image
+            imageBag.width = '100'
+            imageBag.height = '100'
+
+        let priceP = document.createElement('p')
+            priceP.innerText = '$ ' + bag.price
+
+        let designerh3 = document.createElement('h3')
+            designerh3.innerText = bag.designer
+
+        let viewDiv = document.createElement('div')
+            viewDiv.className = 'view-button-div'
+
+            let deleteBtn = document.createElement('button')
+            deleteBtn.innerText = 'Return'
+            deleteBtn.addEventListener('click', (e) => {
+                console.log(e)
+                deleteMyBag(bag, bagDiv)
+            })
+            
+
+        viewDiv.append(deleteBtn)
+        imageDiv.append(imageBag)
+        bagDiv.append(designerh3, imageDiv, priceP, viewDiv)
+        div.append(bagDiv)
+        console.log(user.listed_bags)
+    })
+})}
+
+
+    myListedButton()
+    myRentedBags()
 })
