@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
-
+  let currentUser
     let bagsURL ='http://localhost:3000/handbags/'
     let usersURL = 'http://localhost:3000/users/'
     let userHandbagsURL = 'http://localhost:3000/user_handbags'
@@ -9,22 +9,23 @@ document.addEventListener("DOMContentLoaded", () => {
     let topnav = document.querySelector('.topnav')
     let listedBtn = document.querySelector('#listed-btn')
     let rentedBtn = document.querySelector('#rented-btn')
+    let listBagBtn = document.querySelector('#list-bag-btn')
 
     let div = document.querySelector('#view-listed-bags')
     let viewBagDiv = document.querySelector('#view-bag')
-
-    
     const containerDiv = document.querySelector('#container')
+    const listBagDiv = document.querySelector('#list-bag-div')
     
 
-    function getBags(currentUserId){
+    function getBags(user){
+        
     fetch(bagsURL)
     .then(resp => resp.json())
-    .then(bags => renderBags(bags, currentUserId))}
+    .then(bags => renderBags(bags, user))}
 
 
-    function renderBags(bags, currentUserId){
-        bags.forEach(bag => renderBag(bag, currentUserId)  
+    function renderBags(bags, user){
+        bags.forEach(bag => renderBag(bag, user)  
     )}
     
 
@@ -106,10 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
         })
         .then(resp => resp.json())
         .then(user => {
-            let currentUserId = user.id
-            getBags(currentUserId),
-            myListedButton(user),
-            myRentedBags(user)
+            let currentUser = user
+            getBags(currentUser),
+            myListedButton(currentUser),
+            myRentedBags(currentUser)
         }
         )}
 
@@ -154,16 +155,18 @@ function loginUser(form){
     .then(users => users.forEach(user => { 
            if (user.email === form.email.value)
            {
-
-            getBags(user.id),
-            myListedButton(user),
-            myRentedBags(user)} 
+            let currentUser = user
+            getBags(currentUser),
+            myListedButton(currentUser),
+            myRentedBags(currentUser)} 
         })
     )}
  
 
     function renderBag(bag, user){
         topnav.style.display = 'block'
+
+       
         if (bag.lister_id !== user.id){
         let bagDiv = document.createElement('div')
             bagDiv.className = 'card'
@@ -180,8 +183,9 @@ function loginUser(form){
         let viewDiv = document.createElement('div')
             viewDiv.className = 'view-button-div'
         let viewBtn = document.createElement('button')
+
             viewBtn.innerText = 'View Me'
-            viewBtn.addEventListener('click', () => displaySingleBag(bag, currentUserId))
+            viewBtn.addEventListener('click', () => displaySingleBag(bag, user))
 
         viewDiv.append(viewBtn)
         imageDiv.append(imageBag)
@@ -189,7 +193,7 @@ function loginUser(form){
         containerDiv.append(bagDiv)}
     }
     
-    function displaySingleBag(bag, currentUserId){
+    function displaySingleBag(bag, user){
         
         containerDiv.style.display = 'none'
         let imgDiv = document.createElement('div')
@@ -212,7 +216,7 @@ function loginUser(form){
 
         let rentBtn = document.createElement('button')
             rentBtn.innerText = 'Rent Me'
-            rentBtn.addEventListener('click', (e) => rentABag(bag, currentUserId))
+            rentBtn.addEventListener('click', (e) => rentABag(bag, user))
 
         let homeBtn = document.createElement('button')
             homeBtn.innerText = 'All Handbags'
@@ -228,15 +232,15 @@ function loginUser(form){
         viewBagDiv.append(imgDiv, detailsDiv)
     }
 
-    function rentABag(bag, currentUserId){
+    function rentABag(bag, user){
         let configObj = {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-            body: JSON.stringify({user_id: currentUserId, handbag_id: bag.id})
+            body: JSON.stringify({user_id: user.id, handbag_id: bag.id})
         }
         fetch(userHandbagsURL, configObj)
         .then(res => res.json())
-        .then(bag => myRentedBags(bag.user))
+        .then(bag => myRentedBags(user))
     }
 
     function myListedButton(user){
@@ -300,14 +304,17 @@ function deleteMyBag(bag,bagDiv){
 }
 
 function myRentedBags(user){
-    rentedBtn.addEventListener('click', (e) => {
-        console.log(e)
+    fetch(usersURL)
+    .then(res => res.json())
+    .then(rentedBtn.addEventListener('click', (e) => {
 
         div.innerHTML = ""
             containerDiv.style.display = 'none'
             viewBagDiv.style.display ='none'
-        debugger 
-            user.handbags.forEach(bag => {
+        
+            console.log(user.handbags)
+            
+        user.handbags.forEach(bag => {
             let bagDiv = document.createElement('div')
             bagDiv.className = 'card'
 
@@ -339,11 +346,54 @@ function myRentedBags(user){
         imageDiv.append(imageBag)
         bagDiv.append(designerh3, imageDiv, priceP, viewDiv)
         div.append(bagDiv)
-        console.log(user.listed_bags)
+        // console.log(user.listed_bags)
     })
-})}
+}))}
 
+    function listABag(){
+    listBagBtn.addEventListener('click', () => {
+        containerDiv.innerHTML = ''
+        viewBagDiv.innerHTML = ''
+        div.innerHTML = ''
 
+        let listBagForm = document.createElement('form')
+        listBagForm.className = 'list-bag-form'
+        listBagForm.innerHTML = `<input type="text" name="designer" value="" placeholder="Designer" class="input-text" required /> <br>
+        <input type="text" name="bag_type" value="" placeholder="Bag Type" class="input-text" required /> <br>
+        <input type="text" name="color" value="" placeholder="Color" class="input-text" required /> <br>
+        <input type="text" name="fabric" value="" placeholder="Fabric" class="input-text" required /> <br>
+        <input type="number" name="price" value="" placeholder="Price" class="input-text" required /> <br>
+        <input type="text" name="image" value="" placeholder="Image Url" class="input-text" required /> <br>
+        <input type="submit" name="submit" value="List My Bag" class="submit"  />`
+
+        listBagDiv.append(listBagForm)
+
+        listBagForm.addEventListener('submit', (e) => {
+
+            e.preventDefault()
+            
+           let lister_id = currentUser.id //cannot read undefined
+            
+           configObj = { method: 'POST',
+            headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+            body: JSON.stringify({
+                designer: listBagForm.designer.value,
+                bag_type: listBagForm.bag_type.value,
+                color: listBagForm.color.value,
+                fabric: listBagForm.fabric.value,
+                price: listBagForm.price.value,
+                image: listBagForm.image.value,
+                lister_id
+            })}
+
+            fetch(bagsURL, configObj)
+            .then(res => res.json())
+            .then(console.log)
+         })
+    })
+    }
+
+    listABag()
     myListedButton()
     myRentedBags()
 })
