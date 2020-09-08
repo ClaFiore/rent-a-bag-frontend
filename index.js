@@ -9,6 +9,10 @@ document.addEventListener("DOMContentLoaded", () => {
     let topnav = document.querySelector('.topnav')
     let listedBtn = document.querySelector('#listed-btn')
     let rentedBtn = document.querySelector('#rented-btn')
+
+    let div = document.querySelector('#view-listed-bags')
+    let viewBagDiv = document.querySelector('#view-bag')
+
     
     const containerDiv = document.querySelector('#container')
     
@@ -103,7 +107,9 @@ document.addEventListener("DOMContentLoaded", () => {
         .then(resp => resp.json())
         .then(user => {
             let currentUserId = user.id
-            getBags(currentUserId)
+            getBags(currentUserId),
+            myListedButton(user),
+            myRentedBags(user)
         }
         )}
 
@@ -147,18 +153,18 @@ function loginUser(form){
     .then(resp => resp.json())
     .then(users => users.forEach(user => { 
            if (user.email === form.email.value)
-           {let currentUserId = user.id
+           {
 
-            getBags(currentUserId),
+            getBags(user.id),
             myListedButton(user),
             myRentedBags(user)} 
         })
     )}
  
 
-    function renderBag(bag, currentUserId){
+    function renderBag(bag, user){
         topnav.style.display = 'block'
-        if (bag.lister_id !== currentUserId){
+        if (bag.lister_id !== user.id){
         let bagDiv = document.createElement('div')
             bagDiv.className = 'card'
         let imageDiv = document.createElement('div')
@@ -185,9 +191,6 @@ function loginUser(form){
     
     function displaySingleBag(bag, currentUserId){
         
-        
-        let viewBagDiv = document.querySelector('#view-bag')
-
         containerDiv.style.display = 'none'
         let imgDiv = document.createElement('div')
         let image = document.createElement('img')
@@ -233,12 +236,15 @@ function loginUser(form){
         }
         fetch(userHandbagsURL, configObj)
         .then(res => res.json())
-        .then(console.log)
+        .then(bag => myRentedBags(bag.user))
     }
 
     function myListedButton(user){
+
         listedBtn.addEventListener('click', (e) => {
-            let div = document.querySelector('#view-listed-bags')
+            div.innerHTML = ""
+            viewBagDiv.style.display ='none'
+            // let div = document.querySelector('#view-listed-bags')
             containerDiv.style.display = 'none'
 
             user.listed_bags.forEach(bag => {
@@ -297,9 +303,10 @@ function myRentedBags(user){
     rentedBtn.addEventListener('click', (e) => {
         console.log(e)
 
-        let div = document.querySelector('#view-listed-bags')
+        div.innerHTML = ""
             containerDiv.style.display = 'none'
-
+            viewBagDiv.style.display ='none'
+        debugger 
             user.handbags.forEach(bag => {
             let bagDiv = document.createElement('div')
             bagDiv.className = 'card'
