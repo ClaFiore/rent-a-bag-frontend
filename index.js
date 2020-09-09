@@ -194,10 +194,15 @@ function loginUser(form){
         let viewBtn = document.createElement('button')
         viewBtn.innerText = 'View Me'
 
-        if(user.handbags.some(handbag => handbag.id === bag.id)){
-                viewBtn.innerText = 'Rented'
-                viewBtn.disabled = true;
-            }
+        // if(user.handbags.some(handbag => handbag.id === bag.id)){
+        //         viewBtn.innerText = 'Rented'
+        //         viewBtn.disabled = true;
+        //     }
+        if(bag.user_handbags.length > 0 ){
+            viewBtn.innerText = 'Rented'
+            viewBtn.disabled = true;
+        }
+        console.log(bag.user_handbags)
         
    
            
@@ -213,6 +218,7 @@ function loginUser(form){
     function displaySingleBag(bag, user){
         
         containerDiv.style.display = 'none'
+        viewBagDiv.style.display = 'block'
         let imgDiv = document.createElement('div')
         let image = document.createElement('img')
         image.src = bag.image
@@ -263,14 +269,16 @@ function loginUser(form){
     function myListedButton(user){
 
         listedBtn.addEventListener('click', (e) => {
+
             fetch(usersURL + user.id)
             .then(resp => resp.json())
             .then(user => {
-            
+            div.style.display = 'block'
             div.innerHTML = ""
             viewBagDiv.style.display ='none'
             // let div = document.querySelector('#view-listed-bags')
             containerDiv.style.display = 'none'
+            listBagDiv.style.display = 'none'
 
             user.listed_bags.forEach(bag => {
 
@@ -292,11 +300,14 @@ function loginUser(form){
 
         let viewDiv = document.createElement('div')
             viewDiv.className = 'view-button-div'
+
+
         let editBtn = document.createElement('button')
             editBtn.innerText = 'Update'
             editBtn.addEventListener('click', (e) => 
-            console.log(e)
-            // editMyBag(bag,user)
+           
+            editMyBag(bag,user)
+            
             )
 
             let deleteBtn = document.createElement('button')
@@ -317,6 +328,50 @@ function loginUser(form){
         })})
     }
 
+function  editMyBag(bag,user){
+    div.innerHTML = ""
+
+
+
+    let updateBagForm = document.createElement('form')
+    updateBagForm.className = 'list-bag-form'
+    updateBagForm.innerHTML = `<input type="text" name="designer" value=${bag.designer} placeholder="Designer" class="input-text" required /> <br>
+    <input type="text" name="bag_type" value=${bag.bag_type} placeholder="Bag Type" class="input-text" required /> <br>
+    <input type="text" name="color" value=${bag.color} placeholder="Color" class="input-text" required /> <br>
+    <input type="text" name="fabric" value=${bag.fabric} placeholder="Fabric" class="input-text" required /> <br>
+    <input type="number" name="price" value=${bag.price} placeholder="Price" class="input-text" required /> <br>
+    <input type="text" name="image" value=${bag.image} placeholder="Image Url" class="input-text" required /> <br>
+    <input type="submit" name="submit" value="Update My Bag" class="submit"  />`
+
+    div.append(updateBagForm)
+
+    updateBagForm.addEventListener('submit', (e) => {
+        e.preventDefault()
+       
+        fetch(bagsURL + bag.id, {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                Accept: 'application/json'
+            },
+            body: JSON.stringify({
+                designer: updateBagForm.designer.value,
+                bag_type: updateBagForm.bag_type.value,
+                color: updateBagForm.color.value,
+                fabric: updateBagForm.fabric.value,
+                price: updateBagForm.price.value,
+                image: updateBagForm.image.value
+            })
+        })
+        .then(response => response.json())
+        .then(data =>  updateBagForm.remove(),
+        backToListedBags(user, bag)
+        )
+    })
+    
+}  
+    
+
 function deleteMyBag(bag,bagDiv){
     fetch(bagsURL + bag.id, {
         method: "DELETE"
@@ -331,9 +386,10 @@ function myRentedBags(user){
     .then(user => {
         rentedBtn.addEventListener('click', (e) => {
 
-        div.innerHTML = ""
+            div.innerHTML = ""
             containerDiv.style.display = 'none'
             viewBagDiv.style.display ='none'
+            div.style.display = 'block'
         
             console.log(user.handbags)
             
@@ -411,7 +467,8 @@ function myRentedBags(user){
 
             fetch(bagsURL, configObj)
             .then(res => res.json())
-            .then(console.log)
+            .then(console.log,
+                listBagForm.reset())
          })
     })
     }
@@ -426,7 +483,63 @@ function myRentedBags(user){
         })
     }
     
-    
+function backToListedBags(user, bag){
+        fetch(usersURL + user.id)
+        .then(resp => resp.json())
+        .then(user => {
+        div.style.display = 'block'
+        div.innerHTML = ""
+        viewBagDiv.style.display ='none'
+        // let div = document.querySelector('#view-listed-bags')
+        containerDiv.style.display = 'none'
+        listBagDiv.style.display = 'none'
+
+        user.listed_bags.forEach(bag => {
+
+        let bagDiv = document.createElement('div')
+        bagDiv.className = 'card'
+
+        let imageDiv = document.createElement('div')
+        let imageBag = document.createElement('img')
+        imageBag.className = 'image-avatar'
+        imageBag.src = bag.image
+        imageBag.width = '100'
+        imageBag.height = '100'
+
+    let priceP = document.createElement('p')
+        priceP.innerText = '$ ' + bag.price
+
+    let designerh3 = document.createElement('h3')
+        designerh3.innerText = bag.designer
+
+    let viewDiv = document.createElement('div')
+        viewDiv.className = 'view-button-div'
+
+
+    let editBtn = document.createElement('button')
+        editBtn.innerText = 'Update'
+        editBtn.addEventListener('click', (e) => 
+       
+        editMyBag(bag,user)
+        
+        )
+
+        let deleteBtn = document.createElement('button')
+        deleteBtn.innerText = 'Delete'
+        deleteBtn.addEventListener('click', (e) => {
+            console.log(e)
+            deleteMyBag(bag, bagDiv)
+        })
+        
+
+    viewDiv.append(editBtn, deleteBtn)
+    imageDiv.append(imageBag)
+    bagDiv.append(designerh3, imageDiv, priceP, viewDiv)
+    div.append(bagDiv)
+    console.log(user.listed_bags)
+
+        })
+    })}
     // listABag()
     // myListedButton()
     // myRentedBags()
