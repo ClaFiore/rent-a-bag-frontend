@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let listedBtn = document.querySelector('#listed-btn')
     let rentedBtn = document.querySelector('#rented-btn')
     let listBagBtn = document.querySelector('#list-bag-btn')
+    let homeBtn = document.querySelector('#home-btn')
 
     let div = document.querySelector('#view-listed-bags')
     let viewBagDiv = document.querySelector('#view-bag')
@@ -25,6 +26,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
     function renderBags(bags, user){
+        containerDiv.style.display = 'block'
+        containerDiv.innerHTML = ""
         bags.forEach(bag => renderBag(bag, user)  
     )}
     
@@ -110,7 +113,9 @@ document.addEventListener("DOMContentLoaded", () => {
             let currentUser = user
             getBags(currentUser),
             myListedButton(currentUser),
-            myRentedBags(currentUser)
+            myRentedBags(currentUser),
+            listABag(currentUser),
+            homeButton(currentUser)
         }
         )}
 
@@ -158,12 +163,16 @@ function loginUser(form){
             let currentUser = user
             getBags(currentUser),
             myListedButton(currentUser),
-            myRentedBags(currentUser)} 
+            myRentedBags(currentUser),
+            listABag(currentUser),
+            homeButton(currentUser)} 
         })
     )}
  
 
     function renderBag(bag, user){
+        
+       
         topnav.style.display = 'block'
 
        
@@ -183,9 +192,17 @@ function loginUser(form){
         let viewDiv = document.createElement('div')
             viewDiv.className = 'view-button-div'
         let viewBtn = document.createElement('button')
+        viewBtn.innerText = 'View Me'
 
-            viewBtn.innerText = 'View Me'
+        if(user.handbags.some(handbag => handbag.id === bag.id)){
+                viewBtn.innerText = 'Rented'
+                viewBtn.disabled = true;
+            }
+        
+   
+           
             viewBtn.addEventListener('click', () => displaySingleBag(bag, user))
+
 
         viewDiv.append(viewBtn)
         imageDiv.append(imageBag)
@@ -246,12 +263,17 @@ function loginUser(form){
     function myListedButton(user){
 
         listedBtn.addEventListener('click', (e) => {
+            fetch(usersURL + user.id)
+            .then(resp => resp.json())
+            .then(user => {
+            
             div.innerHTML = ""
             viewBagDiv.style.display ='none'
             // let div = document.querySelector('#view-listed-bags')
             containerDiv.style.display = 'none'
 
             user.listed_bags.forEach(bag => {
+
             let bagDiv = document.createElement('div')
             bagDiv.className = 'card'
 
@@ -292,7 +314,7 @@ function loginUser(form){
         console.log(user.listed_bags)
 
             })
-        })
+        })})
     }
 
 function deleteMyBag(bag,bagDiv){
@@ -304,9 +326,10 @@ function deleteMyBag(bag,bagDiv){
 }
 
 function myRentedBags(user){
-    fetch(usersURL)
+    fetch(usersURL + user.id)
     .then(res => res.json())
-    .then(rentedBtn.addEventListener('click', (e) => {
+    .then(user => {
+        rentedBtn.addEventListener('click', (e) => {
 
         div.innerHTML = ""
             containerDiv.style.display = 'none'
@@ -348,9 +371,9 @@ function myRentedBags(user){
         div.append(bagDiv)
         // console.log(user.listed_bags)
     })
-}))}
+})})}
 
-    function listABag(){
+    function listABag(currentUser){
     listBagBtn.addEventListener('click', () => {
         containerDiv.innerHTML = ''
         viewBagDiv.innerHTML = ''
@@ -372,8 +395,8 @@ function myRentedBags(user){
 
             e.preventDefault()
             
+            console.log(currentUser)
            let lister_id = currentUser.id //cannot read undefined
-            
            configObj = { method: 'POST',
             headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
             body: JSON.stringify({
@@ -393,7 +416,18 @@ function myRentedBags(user){
     })
     }
 
-    listABag()
-    myListedButton()
-    myRentedBags()
+    function homeButton(currentUser){
+        homeBtn.addEventListener('click', (e) => {
+            viewBagDiv.style.display = "none"
+            div.style.display ='none'
+            getBags(currentUser)
+            console.log(currentUser)
+            console.log(e)
+        })
+    }
+    
+    
+    // listABag()
+    // myListedButton()
+    // myRentedBags()
 })
