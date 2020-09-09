@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   let currentUser
+  
     let bagsURL ='http://localhost:3000/handbags/'
     let usersURL = 'http://localhost:3000/users/'
     let userHandbagsURL = 'http://localhost:3000/user_handbags/'
@@ -11,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let rentedBtn = document.querySelector('#rented-btn')
     let listBagBtn = document.querySelector('#list-bag-btn')
     let homeBtn = document.querySelector('#home-btn')
+    let balanceh3 = document.querySelector('#balance')
+
 
     let div = document.querySelector('#view-listed-bags')
     let viewBagDiv = document.querySelector('#view-bag')
@@ -115,7 +118,8 @@ document.addEventListener("DOMContentLoaded", () => {
             myListedButton(currentUser),
             myRentedBags(currentUser),
             listABag(currentUser),
-            homeButton(currentUser)
+            homeButton(currentUser),
+            balanceh3.innerText = 'Balance $ ' + currentUser.balance
         }
         )}
 
@@ -165,7 +169,8 @@ function loginUser(form){
             myListedButton(currentUser),
             myRentedBags(currentUser),
             listABag(currentUser),
-            homeButton(currentUser)} 
+            homeButton(currentUser),
+            balanceh3.innerText = 'Balance $ ' + currentUser.balance} 
         })
     )}
  
@@ -259,11 +264,34 @@ function loginUser(form){
         let configObj = {
             method: 'POST',
             headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-            body: JSON.stringify({user_id: user.id, handbag_id: bag.id})
-        }
+            body: JSON.stringify({user_id: user.id, handbag_id: bag.id})}
         fetch(userHandbagsURL, configObj)
         .then(res => res.json())
         .then(bag => myRentedBags(user))
+        
+        decreaseUserBalance()
+        increaseListerBalance()
+
+
+        function decreaseUserBalance(){
+            
+        let newBalance = user.balance - bag.price
+        // if newBalance > 0 {patch request}
+        let config2 = { method: 'PATCH', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                        body: JSON.stringify({balance: newBalance})}
+        fetch(usersURL + user.id, config2)
+        .then(res=>res.json())
+        .then(updatedUser => {balanceh3.innerText = 'Balance $ ' + newBalance})
+        }
+
+        function increaseListerBalance(){
+        let lister_balance = bag.lister.balance + bag.price
+        let config3 = { method: 'PATCH', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                        body: JSON.stringify({balance: lister_balance})}
+        fetch(usersURL + bag.lister.id, config3)
+        .then(res=>res.json())
+        .then(data => console.log(data))
+        }
     }
 
     function myListedButton(user){
@@ -560,4 +588,15 @@ console.log(user.listed_bags)
     // listABag()
     // myListedButton()
     // myRentedBags()
+
+
+
+    //BALANCE
+
+
+
+
+
+
+
 })
