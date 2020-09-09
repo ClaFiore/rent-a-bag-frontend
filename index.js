@@ -261,18 +261,23 @@ function loginUser(form){
     }
 
     function rentABag(bag, user){
-        let configObj = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-            body: JSON.stringify({user_id: user.id, handbag_id: bag.id})}
-        fetch(userHandbagsURL, configObj)
-        .then(res => res.json())
-        .then(bag => myRentedBags(user))
+
+        if (bag.price <= user.balance){
+
+            let configObj = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                body: JSON.stringify({user_id: user.id, handbag_id: bag.id})}
+            fetch(userHandbagsURL, configObj)
+            .then(res => res.json())
+            .then(bag => {myRentedBags(user)
+                decreaseUserBalance()
+                increaseListerBalance()
+            })
+        }
+        else
+            alert('Balance too low')
         
-        decreaseUserBalance()
-        increaseListerBalance()
-
-
         function decreaseUserBalance(){
             
         let newBalance = user.balance - bag.price
