@@ -2,7 +2,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let currentUser
     let bagsURL ='http://localhost:3000/handbags/'
     let usersURL = 'http://localhost:3000/users/'
-    let userHandbagsURL = 'http://localhost:3000/user_handbags'
+    let userHandbagsURL = 'http://localhost:3000/user_handbags/'
 
     let signUpForm = document.querySelector('#sign-up')
     let signLoginDiv = document.querySelector('#signup-login')
@@ -364,8 +364,10 @@ function  editMyBag(bag,user){
             })
         })
         .then(response => response.json())
-        .then(data =>  updateBagForm.remove(),
-        backToListedBags(user, bag)
+        .then(updatedBag => {
+            console.log(updatedBag)
+            updateBagForm.remove(),
+            backToListedBags(user, bag)}
         )
     })
     
@@ -415,12 +417,8 @@ function myRentedBags(user){
 
             let deleteBtn = document.createElement('button')
             deleteBtn.innerText = 'Return'
-            deleteBtn.addEventListener('click', (e) => {
-                console.log(e)
-                deleteMyBag(bag, bagDiv)
-            })
+            deleteBtn.addEventListener('click', (e) => returnBag(bag, user, bagDiv))
             
-
         viewDiv.append(deleteBtn)
         imageDiv.append(imageBag)
         bagDiv.append(designerh3, imageDiv, priceP, viewDiv)
@@ -428,6 +426,25 @@ function myRentedBags(user){
         // console.log(user.listed_bags)
     })
 })})}
+
+function returnBag(bag, user, bagDiv){
+
+    let user_handbag_id
+
+    user.user_handbags.forEach(rented_bag => {
+        if (rented_bag.handbag_id === bag.id)
+        {user_handbag_id = rented_bag.id}
+        
+    })
+    
+    // console.log(user_handbag_id)
+
+    configObj = {method: 'DELETE'}
+    fetch(userHandbagsURL + user_handbag_id, configObj)
+    .then(bagDiv.remove())  // change button rented to view me in home
+}
+
+
 
     function listABag(currentUser){
     listBagBtn.addEventListener('click', () => {
@@ -493,7 +510,7 @@ function backToListedBags(user, bag){
         // let div = document.querySelector('#view-listed-bags')
         containerDiv.style.display = 'none'
         listBagDiv.style.display = 'none'
-
+console.log(user.listed_bags)
         user.listed_bags.forEach(bag => {
 
         let bagDiv = document.createElement('div')
