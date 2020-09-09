@@ -1,8 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   let currentUser
+  
     let bagsURL ='http://localhost:3000/handbags/'
     let usersURL = 'http://localhost:3000/users/'
-    let userHandbagsURL = 'http://localhost:3000/user_handbags'
+    let userHandbagsURL = 'http://localhost:3000/user_handbags/'
 
     let signUpForm = document.querySelector('#sign-up')
     let signLoginDiv = document.querySelector('#signup-login')
@@ -11,6 +12,8 @@ document.addEventListener("DOMContentLoaded", () => {
     let rentedBtn = document.querySelector('#rented-btn')
     let listBagBtn = document.querySelector('#list-bag-btn')
     let homeBtn = document.querySelector('#home-btn')
+    let balanceh3 = document.querySelector('#balance')
+
 
     let div = document.querySelector('#view-listed-bags')
     let viewBagDiv = document.querySelector('#view-bag')
@@ -115,7 +118,8 @@ document.addEventListener("DOMContentLoaded", () => {
             myListedButton(currentUser),
             myRentedBags(currentUser),
             listABag(currentUser),
-            homeButton(currentUser)
+            homeButton(currentUser),
+            balanceh3.innerText = 'Balance $ ' + currentUser.balance
         }
         )}
 
@@ -165,7 +169,8 @@ function loginUser(form){
             myListedButton(currentUser),
             myRentedBags(currentUser),
             listABag(currentUser),
-            homeButton(currentUser)} 
+            homeButton(currentUser),
+            balanceh3.innerText = 'Balance $ ' + currentUser.balance} 
         })
     )}
  
@@ -256,14 +261,42 @@ function loginUser(form){
     }
 
     function rentABag(bag, user){
-        let configObj = {
-            method: 'POST',
-            headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
-            body: JSON.stringify({user_id: user.id, handbag_id: bag.id})
+
+        if (bag.price <= user.balance){
+
+            let configObj = {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                body: JSON.stringify({user_id: user.id, handbag_id: bag.id})}
+            fetch(userHandbagsURL, configObj)
+            .then(res => res.json())
+            .then(bag => {myRentedBags(user)
+                decreaseUserBalance()
+                increaseListerBalance()
+            })
         }
-        fetch(userHandbagsURL, configObj)
-        .then(res => res.json())
-        .then(bag => myRentedBags(user))
+        else
+            alert('Balance too low')
+        
+        function decreaseUserBalance(){
+            
+        let newBalance = user.balance - bag.price
+        // if newBalance > 0 {patch request}
+        let config2 = { method: 'PATCH', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                        body: JSON.stringify({balance: newBalance})}
+        fetch(usersURL + user.id, config2)
+        .then(res=>res.json())
+        .then(updatedUser => {balanceh3.innerText = 'Balance $ ' + newBalance})
+        }
+
+        function increaseListerBalance(){
+        let lister_balance = bag.lister.balance + bag.price
+        let config3 = { method: 'PATCH', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                        body: JSON.stringify({balance: lister_balance})}
+        fetch(usersURL + bag.lister.id, config3)
+        .then(res=>res.json())
+        .then(data => console.log(data))
+        }
     }
 
     function myListedButton(user){
@@ -364,8 +397,10 @@ function  editMyBag(bag,user){
             })
         })
         .then(response => response.json())
-        .then(data =>  updateBagForm.remove(),
-        backToListedBags(user, bag)
+        .then(updatedBag => {
+            console.log(updatedBag)
+            updateBagForm.remove(),
+            backToListedBags(user, bag)}
         )
     })
     
@@ -415,12 +450,8 @@ function myRentedBags(user){
 
             let deleteBtn = document.createElement('button')
             deleteBtn.innerText = 'Return'
-            deleteBtn.addEventListener('click', (e) => {
-                console.log(e)
-                deleteMyBag(bag, bagDiv)
-            })
+            deleteBtn.addEventListener('click', (e) => returnBag(bag, user, bagDiv))
             
-
         viewDiv.append(deleteBtn)
         imageDiv.append(imageBag)
         bagDiv.append(designerh3, imageDiv, priceP, viewDiv)
@@ -428,6 +459,25 @@ function myRentedBags(user){
         // console.log(user.listed_bags)
     })
 })})}
+
+function returnBag(bag, user, bagDiv){
+
+    let user_handbag_id
+
+    user.user_handbags.forEach(rented_bag => {
+        if (rented_bag.handbag_id === bag.id)
+        {user_handbag_id = rented_bag.id}
+        
+    })
+    
+    // console.log(user_handbag_id)
+
+    configObj = {method: 'DELETE'}
+    fetch(userHandbagsURL + user_handbag_id, configObj)
+    .then(bagDiv.remove())  // change button rented to view me in home
+}
+
+
 
     function listABag(currentUser){
     listBagBtn.addEventListener('click', () => {
@@ -493,7 +543,7 @@ function backToListedBags(user, bag){
         // let div = document.querySelector('#view-listed-bags')
         containerDiv.style.display = 'none'
         listBagDiv.style.display = 'none'
-
+console.log(user.listed_bags)
         user.listed_bags.forEach(bag => {
 
         let bagDiv = document.createElement('div')
@@ -543,4 +593,15 @@ function backToListedBags(user, bag){
     // listABag()
     // myListedButton()
     // myRentedBags()
+
+
+
+    //BALANCE
+
+
+
+
+
+
+
 })
