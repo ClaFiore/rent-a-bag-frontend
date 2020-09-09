@@ -27,7 +27,7 @@
   .topnav {
     display: none;
     overflow: hidden;
-    background-color: #333;
+    background-color: rgb(226, 112, 211);
   }
   
   .nav-menu {
@@ -44,6 +44,9 @@
     color: black;
   }
   
+  .nav-menu {
+    background-color:rgb(226, 112, 211) ;
+  }
   /* .topnav button.active {
     background-color: #4CAF50;
     color: white;
