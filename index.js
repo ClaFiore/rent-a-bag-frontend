@@ -14,7 +14,8 @@ document.addEventListener("DOMContentLoaded", () => {
       let rentedBtn = document.querySelector('#rented-btn')
       let listBagBtn = document.querySelector('#list-bag-btn')
       let homeBtn = document.querySelector('#home-btn')
-      let balanceh3 = document.querySelector('#balance')
+      let balanceBtn = document.querySelector('#balance')
+            
   
   
       let div = document.querySelector('#view-listed-bags')
@@ -121,8 +122,9 @@ document.addEventListener("DOMContentLoaded", () => {
               myRentedBags(currentUser),
               listABag(currentUser),
               homeButton(currentUser),
-              addFilterFunc(currentUser)
-              balanceh3.innerText = 'Balance $ ' + currentUser.balance
+              addFilterFunc(currentUser),
+              balanceBtn.addEventListener('click', () => addMoney(currentUser))
+              balanceBtn.innerText = 'Balance $ ' + currentUser.balance
           }
           )}
   
@@ -173,7 +175,8 @@ document.addEventListener("DOMContentLoaded", () => {
               myRentedBags(currentUser),
               listABag(currentUser),
               homeButton(currentUser),
-              balanceh3.innerText = 'Balance $ ' + currentUser.balance,
+              balanceBtn.addEventListener('click', () => addMoney(currentUser)),
+              balanceBtn.innerText = 'Balance $ ' + currentUser.balance,
               addFilterFunc(currentUser)}                                         // add filter and sort function
           })
       )}
@@ -228,15 +231,15 @@ document.addEventListener("DOMContentLoaded", () => {
           let detailsDiv = document.createElement('div')
   
           let h3designer = document.createElement('h3')
-              h3designer.innerText = bag.designer
+              h3designer.innerText = 'Designer: ' + bag.designer
           let pBagType = document.createElement('p')
-              pBagType.innerText = bag.bag_type
+              pBagType.innerText = 'Type: ' + bag.bag_type
           let pColor = document.createElement('p')
-              pColor.innerText = bag.color
+              pColor.innerText = 'Color: '+ bag.color
           let pFabric = document.createElement('p')
-              pFabric.innerText = bag.fabric
+              pFabric.innerText = 'Fabric: ' + bag.fabric
           let pPrice = document.createElement('p')
-              pPrice.innerText = bag.price
+              pPrice.innerText = 'Price: '+ bag.price
   
           let rentBtn = document.createElement('button')
               rentBtn.innerText = 'Rent Me'
@@ -282,7 +285,7 @@ document.addEventListener("DOMContentLoaded", () => {
                           body: JSON.stringify({balance: newBalance})}
           fetch(usersURL + user.id, config2)
           .then(res=>res.json())
-          .then(updatedUser => {balanceh3.innerText = 'Balance $ ' + newBalance})
+          .then(updatedUser => {balanceBtn.innerText = 'Balance $ ' + newBalance})
           }
   
           function increaseListerBalance(){
@@ -698,7 +701,30 @@ document.addEventListener("DOMContentLoaded", () => {
   
       }
   
-      
+      function addMoney(user){
+          console.log('clicked on button')
+          containerDiv.innerHTML= ''
+          let addMoneyForm = document.createElement('form')
+          addMoneyForm.innerHTML = `<label for="amount">Increase your balance:</label><br>
+                                    <input type="number" id='amount' name="amount" value="" placeholder="Amount in $$"><br>
+                                    <input type="submit" value="Submit">`
+          containerDiv.append(addMoneyForm)
+          addMoneyForm.addEventListener('submit', () => {
+              event.preventDefault()
+              let additionalAmount = parseInt(event.target[0].value)
+              let userNewBalance = user.balance + additionalAmount
+              balanceBtn.innerText = 'Balance $ ' + userNewBalance
+              configObjPatch = {method: 'PATCH', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
+                                body: JSON.stringify({balance: userNewBalance})}
+              fetch(usersURL + user.id, configObjPatch)
+              .then(res=>res.json())
+              .then(updatedUser => {
+                  containerDiv.innerHTML = ''
+                    getBags(user)
+            })
+              
+          })
+      }
   
   
   
