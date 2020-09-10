@@ -294,8 +294,11 @@ document.addEventListener("DOMContentLoaded", () => {
               listerP.classList = 'bagP'
               console.log(bag.lister.name)
 
+        let timeP = document.createElement('p')
+            timeP.innerText = "7 Day Rental"
+            timeP.classList = 'bagP'
 
-          detailsDiv.append(h3designer, pBagType, pColor, pFabric, pPrice, listerP, rentBtn, homeBtn)
+          detailsDiv.append(h3designer, pBagType, pColor, pFabric, pPrice, timeP, listerP, rentBtn, homeBtn)
           imgDiv.append(image)
           
           viewBagDiv.append(imgDiv, detailsDiv)
