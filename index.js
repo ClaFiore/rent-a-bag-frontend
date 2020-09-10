@@ -595,7 +595,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function addFilterFunc(user){
       let dropDownDiv = document.createElement('div')
       dropDownDiv.className = 'drop-down-div'
-      topnav.append(dropDownDiv)
+      let filterDiv = document.querySelector('#filter-div')
+      filterDiv.append(dropDownDiv)
       
       let filter = document.createElement('select')
           filter.innerHTML = `<select id="filter">
