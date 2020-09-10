@@ -65,6 +65,43 @@ main{
     border: black;
     
   }
+
+  #about{
+    display: inline-block;
+  }
+
+  #about:hover{
+    color: #ff6cc6;
+  
+  }
+  
+  #contact{
+    display: inline-block;
+  }
+
+  #contact:hover{
+    color: #ff6cc6;
+    
+  }
+
+  #FAQ{
+    display: inline-block;
+  }
+
+  #FAQ:hover{
+    color: #ff6cc6;
+   
+  }
+
+  .footer-menu{
+    justify-content: center;
+  text-align: center;
+    /* position: center; */
+    position: relative;
+    /* height: 50px; */
+    font-size: 19px;
+    
+  }
   
   .topnav button:hover {
     background-color: #ff6cc6;
@@ -126,6 +163,15 @@ main{
     background-color: #ff6cc6; 
     color: black
   }
+
+  .rented-hover:hover + .hide{
+    display: block;
+    color: red;
+  }
+
+  .hide {
+    display: none;
+  }
   
   .form{
     margin: 30px 0;
@@ -159,7 +205,7 @@ main{
     height: 100% !important;  
     float: left;
     position: relative;
-    left: 475px;
+    left: 425px;
     
     display: flex;
     height: 33rem;
@@ -174,15 +220,15 @@ main{
     padding-bottom: 0px;
     padding-left: 2rem;
     width: 42rem;
-    position: relative; top: 100px;
-    right: 300px;
+    position: relative; top: 175px;
+    right: 200px;
     
     /* margin-top: -1000; */
   }
 
 
 .designer-name{
-  font-size: 70px;
+  font-size: 50px;
     font-family: Arial, Helvetica, sans-serif;
 }
 

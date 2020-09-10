@@ -20,6 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let viewBagDiv = document.querySelector('#view-bag')
       const containerDiv = document.querySelector('#container')
       const listBagDiv = document.querySelector('#list-bag-div')
+      let footerDiv = document.querySelector('.footer')
       
   
       function getBags(user){
@@ -34,6 +35,7 @@ document.addEventListener("DOMContentLoaded", () => {
           containerDiv.style.display = 'block'
           filterDiv.style.display = 'block'
           containerDiv.innerHTML = ""
+          footerDiv.style.display = 'block'
           bags.forEach(bag => renderBag(bag, user)  
       )}
       
@@ -211,6 +213,7 @@ document.addEventListener("DOMContentLoaded", () => {
               viewBtn.innerText = 'Rented'
               viewBtn.disabled = true;
               viewBtn.style.color = 'grey'
+              viewBtn.title = "Sorry, I'm Rented"
           }
           
           viewBtn.addEventListener('click', () => displaySingleBag(bag, user))
@@ -224,7 +227,8 @@ document.addEventListener("DOMContentLoaded", () => {
       function displaySingleBag(bag, user){
           viewBagDiv.innerHTML = ''
         //   detailsDiv.innerHTML = ''
-
+        
+          footerDiv.style.display = 'none'
           containerDiv.style.display = 'none'
           viewBagDiv.style.display = 'block'
           let imgDiv = document.createElement('div')
@@ -383,7 +387,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   function  editMyBag(bag,user){
       div.innerHTML = ""
-  
+
   
   
       let updateBagForm = document.createElement('form')
@@ -447,6 +451,7 @@ document.addEventListener("DOMContentLoaded", () => {
               filterDiv.style.display = 'none'
               viewBagDiv.style.display ='none'
               div.style.display = 'block'
+              footerDiv.style.display = 'block'
           
               console.log(user.handbags)
               
@@ -510,6 +515,7 @@ document.addEventListener("DOMContentLoaded", () => {
           listBagDiv.innerHTML = ''
           filterDiv.style.display = 'none'
           listBagDiv.style.display = 'block'
+          footerDiv.style.display = 'block'
   
           let listBagForm = document.createElement('form')
           listBagForm.classList = 'list-bag-form'
@@ -734,13 +740,14 @@ document.addEventListener("DOMContentLoaded", () => {
           viewBagDiv.innerHTML = ''
           div.innerHTML = ''
           listBagDiv.innerHTML = ''
+          footerDiv.style.display = 'block'
 
           
           filterDiv.style.display = 'none'
           containerDiv.innerHTML= ''
           containerDiv.style.display = 'block'
           let addMoneyForm = document.createElement('form')
-          addMoneyForm.innerHTML = `<label for="amount">Increase your balance:</label><br></br></br>
+          addMoneyForm.innerHTML = `<label id='balance-label' for="amount">Increase your balance</label><br></br></br>
                                     <input type="number" id='amount' name="amount" value="" placeholder="Amount in $$"><br>
                                     <input type="number" name="card-num" value="" placeholder="Card Number"><br>
                                     <input type="number" name="expiration" value="" placeholder="Expiration Date"><br>
