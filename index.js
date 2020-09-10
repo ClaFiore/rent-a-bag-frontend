@@ -1,5 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   let currentUser
+  let available
   
     let bagsURL ='http://localhost:3000/handbags/'
     let usersURL = 'http://localhost:3000/users/'
@@ -177,6 +178,7 @@ function loginUser(form){
  
 
     function renderBag(bag, user){
+
         topnav.style.display = 'block'
 
         if (bag.lister_id !== user.id){
@@ -197,20 +199,12 @@ function loginUser(form){
         let viewBtn = document.createElement('button')
         viewBtn.innerText = 'View Me'
 
-        // if(user.handbags.some(handbag => handbag.id === bag.id)){
-        //         viewBtn.innerText = 'Rented'
-        //         viewBtn.disabled = true;
-        //     }
         if(bag.user_handbags.length > 0 ){
             viewBtn.innerText = 'Rented'
             viewBtn.disabled = true;
         }
-        console.log(bag.user_handbags)
         
-   
-           
-            viewBtn.addEventListener('click', () => displaySingleBag(bag, user))
-
+        viewBtn.addEventListener('click', () => displaySingleBag(bag, user))
 
         viewDiv.append(viewBtn)
         imageDiv.append(imageBag)
@@ -644,9 +638,13 @@ function addFilterFunc(user){
         renderBags(allBagsArray, user)
         }
             // SORT BY AVAILABLE FUNCTION ADDED AFTER COMMIT ******************************
-            function sortByDesigner(){
-
-
+            function sortByAvailable() {
+                let availableBags = []
+                allBagsArray.forEach(bag => {
+                    if (bag.user_handbags.length === 0){
+                        availableBags.push(bag)}
+                })
+                renderBags(availableBags, user)
             }
 
     }
