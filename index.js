@@ -30,6 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   
       function renderBags(bags, user){
+          listBagDiv.innerHTML = ''
           containerDiv.style.display = 'block'
           filterDiv.style.display = 'block'
           containerDiv.innerHTML = ""
@@ -184,7 +185,7 @@ document.addEventListener("DOMContentLoaded", () => {
    
   
       function renderBag(bag, user){
-  
+        
           topnav.style.display = 'block'
   
           if (bag.lister_id !== user.id){
@@ -221,7 +222,9 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       
       function displaySingleBag(bag, user){
-          
+          viewBagDiv.innerHTML = ''
+        //   detailsDiv.innerHTML = ''
+
           containerDiv.style.display = 'none'
           viewBagDiv.style.display = 'block'
           let imgDiv = document.createElement('div')
@@ -438,7 +441,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .then(res => res.json())
       .then(user => {
           rentedBtn.addEventListener('click', (e) => {
-  
+            listBagDiv.innerHTML = ''
               div.innerHTML = ""
               containerDiv.style.display = 'none'
               filterDiv.style.display = 'none'
@@ -504,7 +507,9 @@ document.addEventListener("DOMContentLoaded", () => {
           containerDiv.innerHTML = ''
           viewBagDiv.innerHTML = ''
           div.innerHTML = ''
+          listBagDiv.innerHTML = ''
           filterDiv.style.display = 'none'
+          listBagDiv.style.display = 'block'
   
           let listBagForm = document.createElement('form')
           listBagForm.classList = 'list-bag-form'
@@ -726,16 +731,21 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   
       function addMoney(user){
-          console.log('clicked on button')
+          viewBagDiv.innerHTML = ''
+          div.innerHTML = ''
+          listBagDiv.innerHTML = ''
+
+          
           filterDiv.style.display = 'none'
           containerDiv.innerHTML= ''
+          containerDiv.style.display = 'block'
           let addMoneyForm = document.createElement('form')
-          addMoneyForm.innerHTML = `<label for="amount">Increase your balance:</label><br>
+          addMoneyForm.innerHTML = `<label for="amount">Increase your balance:</label><br></br></br>
                                     <input type="number" id='amount' name="amount" value="" placeholder="Amount in $$"><br>
                                     <input type="number" name="card-num" value="" placeholder="Card Number"><br>
                                     <input type="number" name="expiration" value="" placeholder="Expiration Date"><br>
-                                    <input type="number" name="cvv" value="" placeholder="CVV"><br>
-                                    <input type="submit" value="Submit">`
+                                    <input type="number" name="cvv" value="" placeholder="CVV"><br></br>
+                                    <input type="submit" value="Submit" class='submit'>`
           containerDiv.append(addMoneyForm)
           addMoneyForm.addEventListener('submit', () => {
               event.preventDefault()
