@@ -1,6 +1,6 @@
 body{
   font-family: bodoni;
-
+  height: 100%;
 }
 
 main{
@@ -87,7 +87,14 @@ main{
   }
 
   .submit{
-    background: #ff6cc6;
+    background-color: white;
+  color: black;
+  border: 2px solid #ff6cc6;
+  }
+
+  .submit:hover{
+    background-color: #ff6cc6; 
+  color: black
   }
 
   .sign-login-form {
@@ -116,9 +123,51 @@ main{
 
   .reg-button:hover{
     background-color: #ff6cc6; 
-  color: white;
+    color: black
   }
   
+  .form{
+    margin: 30px 0;
+  }
+
+  input[type=text]{
+    border: none;
+  border-bottom: 2px solid #ff6cc6;
+  }
+
+  input[type=number]{
+    border: none;
+  border-bottom: 2px solid #ff6cc6;
+  }
+
+  input{
+    width: 12%;
+    padding: 8px;
+  }
+
+  #balance-label{
+    font-size: 30px;
+    font-family: Arial, Helvetica, sans-serif;
+  }
+
+  .image-div{
+    -webkit-box-align: center !important;
+     /* display: flex !important;
+    align-items: center !important;
+    width: 100% !important;
+    height: 100% !important;  */
+  } 
+
+  .detail-div{
+    float: right;
+    padding: 0 2rem;
+    padding-top: 0px;
+    padding-right: 2rem;
+    padding-bottom: 0px;
+    padding-left: 2rem;
+    width: 42rem;
+  }
+
 
   /* #balance{
     color: black;

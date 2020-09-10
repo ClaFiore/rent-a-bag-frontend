@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
           let formDiv = document.querySelector('#sign-up-form')
           let form = document.createElement('form')
           form.classList = "signup"
+          form.classList.add("form")
           formDiv.append(form)
           console.log(formDiv)
           form.innerHTML = `
@@ -57,7 +58,7 @@ document.addEventListener("DOMContentLoaded", () => {
               placeholder="Name"
               class="input-text"
               required
-            />
+            /></br>
             <input
               type="text"
               name="email"
@@ -65,7 +66,7 @@ document.addEventListener("DOMContentLoaded", () => {
               placeholder="Email"
               class="input-text"
               required
-            />
+            /></br>
             <input
               type="text"
               name="address"
@@ -73,7 +74,7 @@ document.addEventListener("DOMContentLoaded", () => {
               placeholder="Address"
               class="input-text"
               required
-            />
+            /></br>
             <input
               type="text"
               name="balance"
@@ -81,7 +82,7 @@ document.addEventListener("DOMContentLoaded", () => {
               placeholder="Balance"
               class="input-text"
               required
-            />
+            /></br></br>
             <input
               type="submit"
               name="submit"
@@ -138,6 +139,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function logIn(e){
       let loginFormDiv = document.querySelector('#login-form')
       let loginForm = document.createElement('form')
+      loginForm.classList = "form"
       loginFormDiv.append(loginForm)
       loginForm.innerHTML = `
       <input
@@ -147,7 +149,7 @@ document.addEventListener("DOMContentLoaded", () => {
               placeholder="Email"
               class="input-text"
               required
-            />
+            /></br></br>
             <input
               type="submit"
               name="submit"
@@ -224,11 +226,14 @@ document.addEventListener("DOMContentLoaded", () => {
           containerDiv.style.display = 'none'
           viewBagDiv.style.display = 'block'
           let imgDiv = document.createElement('div')
+          imgDiv.classList = 'image-div'
           let image = document.createElement('img')
           image.src = bag.image
           image.width = 300
           image.height = 300
+
           let detailsDiv = document.createElement('div')
+          detailsDiv.classList = 'detail-div'
   
           let h3designer = document.createElement('h3')
               h3designer.innerText = 'Designer: ' + bag.designer
@@ -335,6 +340,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
   
           let editBtn = document.createElement('button')
+              editBtn.classList = 'reg-button'
               editBtn.innerText = 'Update'
               editBtn.addEventListener('click', (e) => 
              
@@ -343,6 +349,7 @@ document.addEventListener("DOMContentLoaded", () => {
               )
   
               let deleteBtn = document.createElement('button')
+              deleteBtn.classList = 'reg-button'
               deleteBtn.innerText = 'Delete'
               deleteBtn.addEventListener('click', (e) => {
                   console.log(e)
@@ -366,13 +373,14 @@ document.addEventListener("DOMContentLoaded", () => {
   
   
       let updateBagForm = document.createElement('form')
-      updateBagForm.className = 'list-bag-form'
-      updateBagForm.innerHTML = `<input type="text" name="designer" value=${bag.designer} placeholder="Designer" class="input-text" required /> <br>
-      <input type="text" name="bag_type" value=${bag.bag_type} placeholder="Bag Type" class="input-text" required /> <br>
-      <input type="text" name="color" value=${bag.color} placeholder="Color" class="input-text" required /> <br>
-      <input type="text" name="fabric" value=${bag.fabric} placeholder="Fabric" class="input-text" required /> <br>
-      <input type="number" name="price" value=${bag.price} placeholder="Price" class="input-text" required /> <br>
-      <input type="text" name="image" value=${bag.image} placeholder="Image Url" class="input-text" required /> <br>
+      updateBagForm.classList = 'list-bag-form'
+      updateBagForm.classList.add('form')
+      updateBagForm.innerHTML = `<input type="text" name="designer" value=${bag.designer} placeholder="Designer" class="input-text" required /> </br>
+      <input type="text" name="bag_type" value=${bag.bag_type} placeholder="Bag Type" class="input-text" required /> </br>
+      <input type="text" name="color" value=${bag.color} placeholder="Color" class="input-text" required /> </br>
+      <input type="text" name="fabric" value=${bag.fabric} placeholder="Fabric" class="input-text" required /> </br>
+      <input type="number" name="price" value=${bag.price} placeholder="Price" class="input-text" required /> </br>
+      <input type="text" name="image" value=${bag.image} placeholder="Image Url" class="input-text" required /> </br></br>
       <input type="submit" name="submit" value="Update My Bag" class="submit"  />`
   
       div.append(updateBagForm)
@@ -448,6 +456,7 @@ document.addEventListener("DOMContentLoaded", () => {
               viewDiv.className = 'view-button-div'
   
               let deleteBtn = document.createElement('button')
+              deleteBtn.classList = 'reg-button'
               deleteBtn.innerText = 'Return'
               deleteBtn.addEventListener('click', (e) => returnBag(bag, user, bagDiv))
               
@@ -485,13 +494,14 @@ document.addEventListener("DOMContentLoaded", () => {
           div.innerHTML = ''
   
           let listBagForm = document.createElement('form')
-          listBagForm.className = 'list-bag-form'
+          listBagForm.classList = 'list-bag-form'
+          listBagForm.classList.add('form')
           listBagForm.innerHTML = `<input type="text" name="designer" value="" placeholder="Designer" class="input-text" required /> <br>
           <input type="text" name="bag_type" value="" placeholder="Bag Type" class="input-text" required /> <br>
           <input type="text" name="color" value="" placeholder="Color" class="input-text" required /> <br>
           <input type="text" name="fabric" value="" placeholder="Fabric" class="input-text" required /> <br>
           <input type="number" name="price" value="" placeholder="Price" class="input-text" required /> <br>
-          <input type="text" name="image" value="" placeholder="Image Url" class="input-text" required /> <br>
+          <input type="text" name="image" value="" placeholder="Image Url" class="input-text" required /> <br></br>
           <input type="submit" name="submit" value="List My Bag" class="submit"  />`
   
           listBagDiv.append(listBagForm)
@@ -706,9 +716,10 @@ document.addEventListener("DOMContentLoaded", () => {
           console.log('clicked on button')
           containerDiv.innerHTML= ''
           let addMoneyForm = document.createElement('form')
-          addMoneyForm.innerHTML = `<label for="amount">Increase your balance:</label><br>
-                                    <input type="number" id='amount' name="amount" value="" placeholder="Amount in $$"><br>
-                                    <input type="submit" value="Submit">`
+          addMoneyForm.classList = 'form'
+          addMoneyForm.innerHTML = `<label id='balance-label' for="amount">Increase Your Balance </label><br></br>
+                                    <input type="number" id='amount' name="amount" value="" placeholder="Amount in $$"><br></br>
+                                    <input type="submit" value="Submit" class="submit" >`
           containerDiv.append(addMoneyForm)
           addMoneyForm.addEventListener('submit', () => {
               event.preventDefault()
