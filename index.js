@@ -26,6 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let contact = document.querySelector('#contact')
       let faq = document.querySelector('#FAQ')
       let footerDiv = document.querySelector('.footer')
+      let welcomeHeader = document.querySelector('#current-user')
 
       about.addEventListener('click', () => displayAboutPage())
       contact.addEventListener('click', () => displayContactPage())
@@ -38,6 +39,8 @@ document.addEventListener("DOMContentLoaded", () => {
   
   
       function renderBags(bags, user){
+        welcomeHeader.style.display = 'block'
+        welcomeHeader.innerText = `Welcome ${user.name}!`
           listBagDiv.innerHTML = ''
           containerDiv.style.display = 'block'
           filterDiv.style.display = 'block'
@@ -222,8 +225,9 @@ document.addEventListener("DOMContentLoaded", () => {
           if(bag.user_handbags.length > 0 ){
               viewBtn.innerText = 'Rented'
               viewBtn.disabled = true;
-              viewBtn.style.color = 'grey'
               viewBtn.title = "Sorry, I'm Rented"
+              viewBtn.classList = 'rented-hover'
+
           }
           
           viewBtn.addEventListener('click', () => displaySingleBag(bag, user))
