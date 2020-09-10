@@ -1,12 +1,25 @@
+body{
+  font-family: bodoni;
+
+}
+
+main{
+  justify-content: center;
+  text-align: center;
+    position: center;
+    height: 50px;
+}
+
 .card{
   text-align: center;
-  border: grey solid 1px;
+  border: black solid 1px;
   padding: 1rem;
   width: 15rem;
-  height: 25rem;
+  height: 23rem;
   display: inline-grid;
   margin: 1rem 2rem;
-  box-shadow: 3px 4px #e04b52
+  box-shadow: 3px 4px black;
+  font: bodoni;
 }
 
 .image-avatar{
@@ -21,29 +34,68 @@
     height: auto;
     display: inline-block;
     background: white;
-    opacity: .8;
   }
 
   .topnav {
+  float: none;
+  position: relative;
+  /* top: 50%; */
+  left: 50%;
+  transform: translate(-50%, -50%);
+
     display: none;
     overflow: hidden;
-    background-color: rgb(226, 112, 211);
+    /* margin-top:30px; */
+    /* position: relative; */ 
+    /* background-color: black; */
   }
   
   .nav-menu {
-    float: left;
+    /* justify-self: center; */
+    float: center;
     color: black;
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
     font-size: 17px;
+    border: black;
   }
   
   .topnav button:hover {
-    background-color: #ddd;
-    color: black;
+    background-color: black;
+    color: white;
   }
   
+
+  .nav-menu{
+    background-color: #e674d3;
+  }
+
+  #header{
+    color: black;
+    display: flex;
+    justify-content: center;
+    background: white;
+    position: relative;
+
+  }
+
+  .submit{
+    background: #e674d3;
+  }
+
+  .sign-login-form {
+    color: #e674d3;
+    justify-content: center;
+    font-size: 30px;
+    font-family: bodini;
+  }
+
+  .sign-login-form:hover{
+    color: black;
+    
+  }
+
   #balance{
     color: black;
   }
