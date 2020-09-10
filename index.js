@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
       function renderBags(bags, user){
           containerDiv.style.display = 'block'
+          filterDiv.style.display = 'block'
           containerDiv.innerHTML = ""
           bags.forEach(bag => renderBag(bag, user)  
       )}
@@ -307,6 +308,7 @@ document.addEventListener("DOMContentLoaded", () => {
               div.style.display = 'block'
               div.innerHTML = ""
               viewBagDiv.style.display ='none'
+              filterDiv.style.display = 'none'
               // let div = document.querySelector('#view-listed-bags')
               containerDiv.style.display = 'none'
               listBagDiv.style.display = 'none'
@@ -421,6 +423,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
               div.innerHTML = ""
               containerDiv.style.display = 'none'
+              filterDiv.style.display = 'none'
               viewBagDiv.style.display ='none'
               div.style.display = 'block'
           
@@ -482,6 +485,7 @@ document.addEventListener("DOMContentLoaded", () => {
           containerDiv.innerHTML = ''
           viewBagDiv.innerHTML = ''
           div.innerHTML = ''
+          filterDiv.style.display = 'none'
   
           let listBagForm = document.createElement('form')
           listBagForm.className = 'list-bag-form'
@@ -703,6 +707,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
       function addMoney(user){
           console.log('clicked on button')
+          filterDiv.style.display = 'none'
           containerDiv.innerHTML= ''
           let addMoneyForm = document.createElement('form')
           addMoneyForm.innerHTML = `<label for="amount">Increase your balance:</label><br>
