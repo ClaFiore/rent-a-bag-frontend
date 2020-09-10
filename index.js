@@ -14,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let listBagBtn = document.querySelector('#list-bag-btn')
       let homeBtn = document.querySelector('#home-btn')
       let balanceBtn = document.querySelector('#balance')
-  
+    let filterDiv = document.querySelector('#filter-div')
   
       let div = document.querySelector('#view-listed-bags')
       let viewBagDiv = document.querySelector('#view-bag')
