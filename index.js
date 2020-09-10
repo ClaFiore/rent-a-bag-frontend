@@ -120,6 +120,7 @@ document.addEventListener("DOMContentLoaded", () => {
             myRentedBags(currentUser),
             listABag(currentUser),
             homeButton(currentUser),
+            addFilterFunc(currentUser)
             balanceh3.innerText = 'Balance $ ' + currentUser.balance
         }
         )}
@@ -616,6 +617,7 @@ function addFilterFunc(user){
                 break
             case 'rented':
                 console.log('rented')
+                sortByRented()
                 break
             default:
                 console.log('no click')
@@ -637,15 +639,25 @@ function addFilterFunc(user){
         allBagsArray.sort(sortOn("designer"))
         renderBags(allBagsArray, user)
         }
-            // SORT BY AVAILABLE FUNCTION ADDED AFTER COMMIT ******************************
-            function sortByAvailable() {
-                let availableBags = []
-                allBagsArray.forEach(bag => {
+            // SORT BY AVAILABLE FUNCTION  ************************************************
+        
+        function sortByAvailable() {
+            let availableBags = []
+            allBagsArray.forEach(bag => {
                     if (bag.user_handbags.length === 0){
                         availableBags.push(bag)}
-                })
-                renderBags(availableBags, user)
-            }
+            })
+            renderBags(availableBags, user)
+        }
+
+        function sortByRented(){
+            let rentedBags = []
+            allBagsArray.forEach(bag => {
+                    if (bag.user_handbags.length > 0){
+                        rentedBags.push(bag)}
+            })
+            renderBags(rentedBags, user)
+        }
 
     }
 
