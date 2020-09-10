@@ -595,7 +595,7 @@ function addFilterFunc(user){
     let dropDownDiv = document.createElement('div')
     dropDownDiv.className = 'drop-down-div'
     topnav.append(dropDownDiv)
-
+    
     let filter = document.createElement('select')
         filter.innerHTML = `<select id="filter">
                             <option value="">Filter By</option>
@@ -618,6 +618,7 @@ function addFilterFunc(user){
                 break
             case 'available':
                 console.log('available')
+                sortByAvailable()                   // callback function added after commit SORT BY AVAILABLE *************
                 break
             case 'rented':
                 console.log('rented')
@@ -642,9 +643,15 @@ function addFilterFunc(user){
         allBagsArray.sort(sortOn("designer"))
         renderBags(allBagsArray, user)
         }
+            // SORT BY AVAILABLE FUNCTION ADDED AFTER COMMIT ******************************
+            function sortByDesigner(){
+
+
+            }
+
     }
 
-
+    
 
 
 
