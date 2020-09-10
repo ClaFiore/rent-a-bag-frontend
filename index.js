@@ -288,8 +288,14 @@ document.addEventListener("DOMContentLoaded", () => {
                   containerDiv.style.display = 'block'
               })
           
-          
-          detailsDiv.append(h3designer, pBagType, pColor, pFabric, pPrice, rentBtn, homeBtn)
+              
+        let listerP = document.createElement('p')
+              listerP.innerText = `Lister: ${bag.lister.name}`
+              listerP.classList = 'bagP'
+              console.log(bag.lister.name)
+
+
+          detailsDiv.append(h3designer, pBagType, pColor, pFabric, pPrice, listerP, rentBtn, homeBtn)
           imgDiv.append(image)
           
           viewBagDiv.append(imgDiv, detailsDiv)
@@ -388,7 +394,8 @@ document.addEventListener("DOMContentLoaded", () => {
                   deleteMyBag(bag, bagDiv)
               })
               
-  
+              
+
           viewDiv.append(editBtn, deleteBtn)
           imageDiv.append(imageBag)
           bagDiv.append(designerh3, imageDiv, priceP, viewDiv)
