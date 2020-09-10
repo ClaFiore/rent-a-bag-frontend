@@ -14,17 +14,23 @@ document.addEventListener("DOMContentLoaded", () => {
       let listBagBtn = document.querySelector('#list-bag-btn')
       let homeBtn = document.querySelector('#home-btn')
       let balanceBtn = document.querySelector('#balance')
-    let filterDiv = document.querySelector('#filter-div')
+      let filterDiv = document.querySelector('#filter-div')
   
       let div = document.querySelector('#view-listed-bags')
       let viewBagDiv = document.querySelector('#view-bag')
       const containerDiv = document.querySelector('#container')
       const listBagDiv = document.querySelector('#list-bag-div')
-      let footerDiv = document.querySelector('.footer')
-      
+
+      let footer = document.querySelector('footer')
+      let about = document.querySelector('#about')
+      let contact = document.querySelector('#contact')
+      let faq = document.querySelector('#FAQ')
+
+      about.addEventListener('click', () => displayAboutPage())
+      contact.addEventListener('click', () => displayContactPage())
+      faq.addEventListener('click', () => displayfaqPage())
   
       function getBags(user){
-          
       fetch(bagsURL)
       .then(resp => resp.json())
       .then(bags => renderBags(bags, user))}
@@ -126,6 +132,7 @@ document.addEventListener("DOMContentLoaded", () => {
               listABag(currentUser),
               homeButton(currentUser),
               addFilterFunc(currentUser),
+              footer.style.display = 'block'
               balanceBtn.addEventListener('click', () => addMoney(currentUser))
               balanceBtn.innerText = 'Balance $ ' + currentUser.balance
           }
@@ -181,7 +188,9 @@ document.addEventListener("DOMContentLoaded", () => {
               homeButton(currentUser),
               balanceBtn.addEventListener('click', () => addMoney(currentUser)),
               balanceBtn.innerText = 'Balance $ ' + currentUser.balance,
-              addFilterFunc(currentUser)}                                         // add filter and sort function
+              addFilterFunc(currentUser),
+              footer.style.display = 'block'
+            }                                         // add filter and sort function
           })
       )}
    
@@ -746,6 +755,7 @@ document.addEventListener("DOMContentLoaded", () => {
           filterDiv.style.display = 'none'
           containerDiv.innerHTML= ''
           containerDiv.style.display = 'block'
+
           let addMoneyForm = document.createElement('form')
           addMoneyForm.innerHTML = `<label id='balance-label' for="amount">Increase your balance</label><br></br></br>
                                     <input type="number" id='amount' name="amount" value="" placeholder="Amount in $$"><br>
@@ -771,6 +781,125 @@ document.addEventListener("DOMContentLoaded", () => {
           })
       }
   
+
+  function displayAboutPage(){
+        filterDiv.style.display = 'none'
+        containerDiv.innerHTML= ''
+        viewBagDiv.innerHTML = ''
+        div.innerHTML = ''
+        listBagDiv.innerHTML = ''
+        containerDiv.style.display = 'block'
+
+      let aboutDiv = document.createElement('div')
+      let aboutTitle = document.createElement('h2')
+      aboutTitle.innerText = 'ABOUT'
+      let aboutDescription = document.createElement('p')
+      aboutDescription.innerHTML = `The B List was founded in 2020 by Catrina and Claudia. <br> 
+      With The B List you can put your designer handbags for rent, and you can rent beautiful bags from other users. <br>
+                                    Rentals last 7 days.<br>
+                                    Our mission is to make women feel beautiful and self-confident every day. <br>
+                                    We are reimagining Luxury:<br>We believe every woman deserves luxury, which is why The B List provides high quality handbags, from verified users, without charging the traditional retail mark up.`
+
+      aboutDiv.append(aboutTitle, aboutDescription)
+      containerDiv.append(aboutDiv)
+  }
+
   
-  
+  function displayContactPage(){
+    filterDiv.style.display = 'none'
+    containerDiv.innerHTML= ''
+    viewBagDiv.innerHTML = ''
+    div.innerHTML = ''
+    listBagDiv.innerHTML = ''
+    containerDiv.style.display = 'block'
+
+    let contactDiv = document.createElement('div')
+      let contactTitle = document.createElement('h2')
+      contactTitle.innerText = 'CONTACT US'
+      let contactText = document.createElement('p')
+      contactText.innerHTML = `The B List is located at 3 Handbags Place, New Heaven, NY<br></br>
+      The B List creators:<br></br>
+      Catrina Friday, co-founder<br>
+      Claudia Borghini, co-founder<br>`
+
+      contactDiv.append(contactTitle, contactText)
+      containerDiv.append(contactDiv)
+
+  }
+
+
+    function displayfaqPage(){
+        filterDiv.style.display = 'none'
+        containerDiv.innerHTML= ''
+        viewBagDiv.innerHTML = ''
+        div.innerHTML = ''
+        listBagDiv.innerHTML = ''
+        containerDiv.style.display = 'block'
+    
+        let faqDiv = document.createElement('div')
+          let faqTitle = document.createElement('h2')
+          faqTitle.innerText = 'FREQUENTLY ASKED QUESTIONS'
+          let faqText = document.createElement('p')
+          faqText.innerHTML = `
+ 
+          Order Status<br></br>
+          Q: How will I know which carrier will ship my merchandise?<br>
+          A: Orders placed on BList.com will ship through one of the following: FedEx, FedEx Smartpost, or the United States Postal Service (USPS). Standard delivery orders will ship via FedEx Smartpost or Federal Express Ground, depending on your zip code. Orders shipped Overnight, Rush, or Saturday delivery will ship via FedEx while shipments to Alaska, Hawaii, US Territories, APO/FPO, and PO Boxes will be shipped via USPS. Once your order ships you will be notified via email. The e-mail will also contain your tracking details. Please select the "Track It" option in the email to track your package.<br>
+          
+          Q: If I order multiple items will they ship all in the same shipment?<br>
+          A: Orders placed online can ship from our Distribution Center, BList Avenue store, or from a vendor. Therefore, your items may be shipped in multiple shipments. Merchandise shipping from a store can take up to 7 to 10 business days to ship. You will not be charged extra delivery fees for multiple shipments, as the single delivery fee will be distributed over the multiple shipments.<br>
+          
+          Q: It has been 24 to 48 business hours and I have not received a shipping confirmation, why?<br>
+          A: All orders are subject to a review process to protect our company and customers. During peak periods, the review process may extend past our goal of 48 hours. Orders shipping from one of our stores or a vendor may take longer to ship than from our Distribution Center. Stores have up to 4 business days to physically locate the merchandise. If the merchandise is not located in this time frame the item(s) will be canceled from the order and an e-mail confirmation will be sent to notify you. Once located, please be advised standard delivery for items shipping from a store is 7 to 10 business days.<br>
+          
+          Q: My order was canceled, so why do I still see a charge?<br>
+          A: Unfortunately, when an order is canceled you may have a pending authorization which is not an actual charge. If paid with a debit card it could take up to 3 to 5 business days for the authorization to be removed. Credit card authorizations usually take up to 72 hours to remove. If you have questions or concerns about the pending authorization, please contact Customer Service at 1-877-551-BList (7257).<br>
+          
+          Q: Can I change my address once my order has been placed?<br>
+          A: Once an order is submitted, we do not have the capability to change an address. To make an address change, we would have to cancel the order and replace it with the correct address.<br>
+          
+          Q: Can I change the size, color, or quantity of my order?<br>
+          A: Once an order is submitted we do not have the capability to make any changes. To make a change, we would have to cancel the order and replace it with the correct information.<br>
+          
+          Q: My order shows delivered and I did not receive my package. What should I do?<br>
+          A: We take matters like these very seriously. If your package shows delivered and you are unable to locate the package please contact Customer Service at 1-877-551-BList (7257) so that we can start an investigation. Please be sure to have your order number and tracking number readily available.<br></br>
+          
+          Returns<br></br>
+          Q: What if my merchandise is incorrect or damaged?<br>
+          A: We take matters like these very seriously. Please contact us directly at 1-877-551-BList (7257) and let us know so we can resolve these matters in a timely manner. It is very important that you do not try to return these items in a store because it is possible they will be denied for a return credit.<br>
+          
+          Q: How can I return my order?<br>
+          A: You can either bring your item to your local BList Avenue store or send it back to us. To return through the mail, you can start your return directly from your BList.com account order history or by entering your order number and billing zip code on our returns website. You can find your order number in the top right corner of your packing slip or in the subject line of your shipping confirmation email.<br>
+          
+          Q: What if my merchandise is incorrect or damaged?<br>
+          A: We apologize if any of your items are anything less than perfect. You can either bring your item to your local BList Avenue store or send it back to us.<br>
+          
+          Q: How much does it cost to return my item through BList.com?<br>
+          A: $9.95, which covers shipping and insurance.<br>
+          
+          Q: How long will it take for my return to be received and a credit issued?<br>
+          A: Returns can take up to 3 weeks to be processed and refunded. Please be advised this timeframe can take longer during the holiday season.<br></br>
+          
+          Payment Methods<br></br>
+          Q: What payment types are accepted?<br>
+          A: We accept the following tenders: BList Avenue Store Card, BList Avenue Mastercard, Visa, Mastercard, American Express, Discover, Japan Credit Bureau, China Union Pay Credit, Diners Club, PayPal, and Masterpass.<br>
+          
+          Q: Do you accept gift cards?<br>
+          A: Yes, we accept BList Avenue gift cards with a PIN code on the back of the card. For security reasons, when placing an order with a gift card as a form of payment, a credit card is required in conjunction with the gift card.<br>
+          
+          Q: How many promotional codes can I use on a single order and are there any restrictions?<br>
+          A: We offer a variety of promotional codes to our customers such as gift with purchases, free shipping, free returns, percentage off, and dollar amount off. A total of 5 promotional codes can be used at checkout as long as they are not two monetary codes, such as percentage off or dollar off. Promotional codes may exclude certain brands or categories of merchandise, which will be listed in the details of the promotional code.<br>
+          
+          Q: How do I redeem my points online?<br>
+          A: Customers have the capability to redeem their BList First points online in the form of an e-gift card or a standard gift card. To do so, please log into your online shopping account to review your points and eligibility.<br>
+          
+          Q: What is an online shopping account and the benefits of having one?<br>
+          A: The online shopping account serves as a speedier checkout process for our customers. By having an online shopping account our customers have the capability to: review and redeem BList First points, view order history, control email preferences, save their favorite items to view later, and store their billing and shipping information.<br>
+          
+          `
+    
+          faqDiv.append(faqTitle, faqText)
+          containerDiv.append(faqDiv)
+    
+      }
   })
