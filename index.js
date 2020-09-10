@@ -229,29 +229,40 @@ document.addEventListener("DOMContentLoaded", () => {
           imgDiv.classList = 'image-div'
           let image = document.createElement('img')
           image.src = bag.image
-          image.width = 300
-          image.height = 300
+          image.width = 650
+          image.height = 650
 
           let detailsDiv = document.createElement('div')
           detailsDiv.classList = 'detail-div'
   
           let h3designer = document.createElement('h3')
-              h3designer.innerText = 'Designer: ' + bag.designer
+            h3designer.classList = 'designer-name'
+              h3designer.innerText = bag.designer
+
           let pBagType = document.createElement('p')
+               pBagType.classList = 'bagP'
               pBagType.innerText = 'Type: ' + bag.bag_type
+
           let pColor = document.createElement('p')
               pColor.innerText = 'Color: '+ bag.color
+              pColor.classList = 'bagP'
+
           let pFabric = document.createElement('p')
               pFabric.innerText = 'Fabric: ' + bag.fabric
+              pFabric.classList = 'bagP'
+
           let pPrice = document.createElement('p')
               pPrice.innerText = 'Price: '+ bag.price
+              pPrice.classList = 'bagP'
   
           let rentBtn = document.createElement('button')
               rentBtn.innerText = 'Rent Me'
+              rentBtn.classList = 'reg-button'
               rentBtn.addEventListener('click', (e) => rentABag(bag, user))
   
           let homeBtn = document.createElement('button')
               homeBtn.innerText = 'All Handbags'
+              homeBtn.classList = 'reg-button'
               homeBtn.addEventListener('click', () => {
                   viewBagDiv.innerHTML = ""
                   containerDiv.style.display = 'block'

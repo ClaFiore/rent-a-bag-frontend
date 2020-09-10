@@ -22,6 +22,7 @@ main{
   box-shadow: 3px 4px black;
   font-family: Arial, Helvetica, sans-serif; 
   font-size: 17px;
+  justify-self: center;
 }
 
 .image-avatar{
@@ -151,11 +152,18 @@ main{
   }
 
   .image-div{
-    -webkit-box-align: center !important;
-     /* display: flex !important;
+    -webkit-box-align: center !important; 
+     display: flex !important;
     align-items: center !important;
     width: 100% !important;
-    height: 100% !important;  */
+    height: 100% !important;  
+    float: left;
+    position: relative;
+    left: 475px;
+    
+    display: flex;
+    height: 33rem;
+    max-width: 70rem;
   } 
 
   .detail-div{
@@ -166,8 +174,21 @@ main{
     padding-bottom: 0px;
     padding-left: 2rem;
     width: 42rem;
+    position: relative; top: 100px;
+    right: 300px;
+    /* margin-top: -1000; */
   }
 
+
+.designer-name{
+  font-size: 70px;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.bagP{
+  font-size: 20px;
+    /* font-family: Arial, Helvetica, sans-serif; */
+}
 
   /* #balance{
     color: black;
