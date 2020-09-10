@@ -1,7 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
     let currentUser
-    let available
     
       let bagsURL ='http://localhost:3000/handbags/'
       let usersURL = 'http://localhost:3000/users/'
@@ -708,6 +707,9 @@ document.addEventListener("DOMContentLoaded", () => {
           let addMoneyForm = document.createElement('form')
           addMoneyForm.innerHTML = `<label for="amount">Increase your balance:</label><br>
                                     <input type="number" id='amount' name="amount" value="" placeholder="Amount in $$"><br>
+                                    <input type="number" name="card-num" value="" placeholder="Card Number"><br>
+                                    <input type="number" name="expiration" value="" placeholder="Expiration Date"><br>
+                                    <input type="number" name="cvv" value="" placeholder="CVV"><br>
                                     <input type="submit" value="Submit">`
           containerDiv.append(addMoneyForm)
           addMoneyForm.addEventListener('submit', () => {
