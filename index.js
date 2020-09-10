@@ -597,6 +597,8 @@ function addFilterFunc(user){
                             <option value="designer">Designer</option>
                             <option value="available">Available for Rent</option>
                             <option value="rented">Currently Rented</option>
+                            <option value="price-low">Price Low to High</option>
+                            <option value="price-high">Price High to Low</option>
                         </select>`
 
     dropDownDiv.append(filter)
@@ -619,13 +621,20 @@ function addFilterFunc(user){
                 console.log('rented')
                 sortByRented()
                 break
+            case 'price-low':
+                sortByPriceLow()
+                console.log('price low to high')
+                break
+            case 'price-high':
+                sortByPriceHigh()
+                console.log('price low to high')
+                break
             default:
                 console.log('no click')
         }
         })
 
-        function sortByDesigner(){
-            function sortOn(property){
+        function sortOn(property){
             return function(a, b){
                 if(a[property] < b[property]){
                     return -1;
@@ -635,11 +644,13 @@ function addFilterFunc(user){
                     return 0;   
                 }
             }
-            }
-        allBagsArray.sort(sortOn("designer"))
-        renderBags(allBagsArray, user)
         }
-            // SORT BY AVAILABLE FUNCTION  ************************************************
+
+        function sortByDesigner(){
+            let bagsSortedDesigner = [...allBagsArray]
+            bagsSortedDesigner.sort(sortOn("designer"))
+            renderBags(bagsSortedDesigner, user)
+        }
         
         function sortByAvailable() {
             let availableBags = []
@@ -657,6 +668,29 @@ function addFilterFunc(user){
                         rentedBags.push(bag)}
             })
             renderBags(rentedBags, user)
+        }
+
+        function sortByPriceLow(){
+            let bagsSortedPriceLow = [...allBagsArray]
+            bagsSortedPriceLow.sort(sortOn("price"))
+            renderBags(bagsSortedPriceLow, user)
+        }
+
+        function sortByPriceHigh(){
+            let bagsSortedPriceHigh = [...allBagsArray]
+            function sortOnReverse(property){
+                return function(a, b){
+                    if(b[property] < a[property]){
+                        return -1;
+                    }else if(b[property] > a[property]){
+                        return 1;
+                    }else{
+                        return 0;   
+                    }
+                }
+            }
+            bagsSortedPriceHigh.sort(sortOnReverse("price"))
+            renderBags(bagsSortedPriceHigh, user)
         }
 
     }
