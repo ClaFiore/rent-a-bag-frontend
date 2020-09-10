@@ -25,6 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let about = document.querySelector('#about')
       let contact = document.querySelector('#contact')
       let faq = document.querySelector('#FAQ')
+      let footerDiv = document.querySelector('.footer')
 
       about.addEventListener('click', () => displayAboutPage())
       contact.addEventListener('click', () => displayContactPage())
