@@ -1,7 +1,6 @@
 
 document.addEventListener("DOMContentLoaded", () => {
     let currentUser
-    let available
     
       let bagsURL ='http://localhost:3000/handbags/'
       let usersURL = 'http://localhost:3000/users/'
@@ -33,6 +32,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
       function renderBags(bags, user){
           containerDiv.style.display = 'block'
+          filterDiv.style.display = 'block'
           containerDiv.innerHTML = ""
           bags.forEach(bag => renderBag(bag, user)  
       )}
@@ -324,6 +324,7 @@ document.addEventListener("DOMContentLoaded", () => {
               div.style.display = 'block'
               div.innerHTML = ""
               viewBagDiv.style.display ='none'
+              filterDiv.style.display = 'none'
               // let div = document.querySelector('#view-listed-bags')
               containerDiv.style.display = 'none'
               listBagDiv.style.display = 'none'
@@ -441,6 +442,7 @@ document.addEventListener("DOMContentLoaded", () => {
   
               div.innerHTML = ""
               containerDiv.style.display = 'none'
+              filterDiv.style.display = 'none'
               viewBagDiv.style.display ='none'
               div.style.display = 'block'
           
@@ -503,6 +505,7 @@ document.addEventListener("DOMContentLoaded", () => {
           containerDiv.innerHTML = ''
           viewBagDiv.innerHTML = ''
           div.innerHTML = ''
+          filterDiv.style.display = 'none'
   
           let listBagForm = document.createElement('form')
           listBagForm.classList = 'list-bag-form'
@@ -725,12 +728,15 @@ document.addEventListener("DOMContentLoaded", () => {
   
       function addMoney(user){
           console.log('clicked on button')
+          filterDiv.style.display = 'none'
           containerDiv.innerHTML= ''
           let addMoneyForm = document.createElement('form')
-          addMoneyForm.classList = 'form'
-          addMoneyForm.innerHTML = `<label id='balance-label' for="amount">Increase Your Balance </label><br></br>
-                                    <input type="number" id='amount' name="amount" value="" placeholder="Amount in $$"><br></br>
-                                    <input type="submit" value="Submit" class="submit" >`
+          addMoneyForm.innerHTML = `<label for="amount">Increase your balance:</label><br>
+                                    <input type="number" id='amount' name="amount" value="" placeholder="Amount in $$"><br>
+                                    <input type="number" name="card-num" value="" placeholder="Card Number"><br>
+                                    <input type="number" name="expiration" value="" placeholder="Expiration Date"><br>
+                                    <input type="number" name="cvv" value="" placeholder="CVV"><br>
+                                    <input type="submit" value="Submit">`
           containerDiv.append(addMoneyForm)
           addMoneyForm.addEventListener('submit', () => {
               event.preventDefault()
