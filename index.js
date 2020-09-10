@@ -199,11 +199,13 @@ document.addEventListener("DOMContentLoaded", () => {
           let viewDiv = document.createElement('div')
               viewDiv.className = 'view-button-div'
           let viewBtn = document.createElement('button')
+          viewBtn.className = 'reg-button'
           viewBtn.innerText = 'View Me'
   
           if(bag.user_handbags.length > 0 ){
               viewBtn.innerText = 'Rented'
               viewBtn.disabled = true;
+              viewBtn.style.color = 'grey'
           }
           
           viewBtn.addEventListener('click', () => displaySingleBag(bag, user))

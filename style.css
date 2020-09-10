@@ -7,19 +7,21 @@ main{
   justify-content: center;
   text-align: center;
     position: center;
+    position: relative;
     height: 50px;
 }
 
 .card{
   text-align: center;
-  border: black solid 1px;
+  border: #ff6cc6 solid 1px;
   padding: 1rem;
   width: 15rem;
   height: 23rem;
   display: inline-grid;
   margin: 1rem 2rem;
   box-shadow: 3px 4px black;
-  font: bodoni;
+  font-family: Arial, Helvetica, sans-serif; 
+  font-size: 17px;
 }
 
 .image-avatar{
@@ -53,22 +55,26 @@ main{
   .nav-menu {
     /* justify-self: center; */
     float: center;
-    color: black;
+    color: #ff6cc6;
     text-align: center;
-    padding: 14px 16px;
+    padding: 10px 40px;
+    width: 17%;
     text-decoration: none;
     font-size: 17px;
     border: black;
+    
   }
   
   .topnav button:hover {
-    background-color: black;
-    color: white;
+    background-color: #ff6cc6;
+    /* color: white; */
+    color: black;
   }
   
 
   .nav-menu{
-    background-color: #e674d3;
+    /* background-color: #ff6cc6; */
+    background-color: black;
   }
 
   #header{
@@ -81,24 +87,42 @@ main{
   }
 
   .submit{
-    background: #e674d3;
+    background: #ff6cc6;
   }
 
   .sign-login-form {
-    color: #e674d3;
+    color: black;
     justify-content: center;
     font-size: 30px;
-    font-family: bodini;
-  }
-
-  .sign-login-form:hover{
-    color: black;
+    /* font-family: bodini; */
+    font-family: Arial, Helvetica, sans-serif;
+    /* font-family: "Lucida Console", Courier, monospace;  */
+    /* font-family: "Times New Roman", Times, serif; */
     
   }
 
-  #balance{
-    color: black;
+  .sign-login-form:hover{
+    color: #ff6cc6;
+    
   }
+
+  .reg-button{
+    background-color: white;
+  color: black;
+  border: 2px solid #ff6cc6;
+ 
+  
+  }
+
+  .reg-button:hover{
+    background-color: #ff6cc6; 
+  color: white;
+  }
+  
+
+  /* #balance{
+    color: black;
+  } */
   /* .topnav button.active {
     background-color: #4CAF50;
     color: white;
