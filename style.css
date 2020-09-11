@@ -16,6 +16,14 @@ main{
     height: 50px;
 }
 
+#page-length{
+  height: 700px
+}
+
+.single-div-length{
+  height: 500px
+}
+
 .card{
   text-align: center;
   border: #ff6cc6 solid 1px;
@@ -278,10 +286,7 @@ main{
     /* font-family: Arial, Helvetica, sans-serif; */
 }
 
-  /* #balance{
-    color: black;
-  } */
-  /* .topnav button.active {
-    background-color: #4CAF50;
-    color: white;
-  } */
+/* #view-bag{
+  height: 400px
+} */
+  

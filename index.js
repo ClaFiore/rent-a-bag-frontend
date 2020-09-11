@@ -301,7 +301,10 @@ document.addEventListener("DOMContentLoaded", () => {
           detailsDiv.append(h3designer, pBagType, pColor, pFabric, pPrice, timeP, listerP, rentBtn, homeBtn)
           imgDiv.append(image)
           
-          viewBagDiv.append(imgDiv, detailsDiv)
+          let lengtheDiv = document.createElement('div')
+          lengtheDiv.classList = 'single-div-length'
+          viewBagDiv.append(imgDiv, detailsDiv, lengtheDiv)
+
       }
   
       function rentABag(bag, user){
