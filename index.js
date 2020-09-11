@@ -792,6 +792,7 @@ document.addEventListener("DOMContentLoaded", () => {
         containerDiv.style.display = 'block'
 
       let aboutDiv = document.createElement('div')
+      aboutDiv.className = 'footer-page'
       let aboutTitle = document.createElement('h2')
       aboutTitle.innerText = 'ABOUT'
       let aboutDescription = document.createElement('p')
@@ -815,6 +816,7 @@ document.addEventListener("DOMContentLoaded", () => {
     containerDiv.style.display = 'block'
 
     let contactDiv = document.createElement('div')
+    contactDiv.className = 'footer-page'
       let contactTitle = document.createElement('h2')
       contactTitle.innerText = 'CONTACT US'
       let contactText = document.createElement('p')
@@ -838,6 +840,7 @@ document.addEventListener("DOMContentLoaded", () => {
         containerDiv.style.display = 'block'
     
         let faqDiv = document.createElement('div')
+        faqDiv.className = 'footer-page'
           let faqTitle = document.createElement('h2')
           faqTitle.innerText = 'FREQUENTLY ASKED QUESTIONS'
           let faqText = document.createElement('p')
