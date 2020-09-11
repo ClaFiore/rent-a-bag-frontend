@@ -227,7 +227,6 @@ document.addEventListener("DOMContentLoaded", () => {
               viewBtn.disabled = true;
               viewBtn.title = "Sorry, I'm Rented"
               viewBtn.classList = 'rented-hover'
-
           }
           
           viewBtn.addEventListener('click', () => displaySingleBag(bag, user))
@@ -241,7 +240,7 @@ document.addEventListener("DOMContentLoaded", () => {
       function displaySingleBag(bag, user){
           viewBagDiv.innerHTML = ''
         //   detailsDiv.innerHTML = ''
-        
+        filterDiv.style.display = 'none'
           footerDiv.style.display = 'none'
           containerDiv.style.display = 'none'
           viewBagDiv.style.display = 'block'
@@ -308,25 +307,68 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   
       function rentABag(bag, user){
-  
           if (bag.price <= user.balance){
-  
               let configObj = {
                   method: 'POST',
                   headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
                   body: JSON.stringify({user_id: user.id, handbag_id: bag.id})}
               fetch(userHandbagsURL, configObj)
               .then(res => res.json())
-              .then(bag => {myRentedBags(user)
-                  decreaseUserBalance()
-                  increaseListerBalance()
+              .then(bag => {
+                  decreaseUserBalance(),
+                  increaseListerBalance(),
+                  displayrentedbags(user)
+
+                function displayrentedbags(user){
+                fetch(usersURL + user.id)
+                .then(res => res.json())
+                .then(user => {
+          
+                listBagDiv.innerHTML = ''
+              div.innerHTML = ""
+              containerDiv.style.display = 'none'
+              filterDiv.style.display = 'none'
+              viewBagDiv.style.display ='none'
+              div.style.display = 'block'
+              footerDiv.style.display = 'block'
+          
+          user.handbags.forEach(bag => {
+              let bagDiv = document.createElement('div')
+              bagDiv.className = 'card'
+  
+              let imageDiv = document.createElement('div')
+              let imageBag = document.createElement('img')
+              imageBag.className = 'image-avatar'
+              imageBag.src = bag.image
+              imageBag.width = '100'
+              imageBag.height = '100'
+  
+          let priceP = document.createElement('p')
+              priceP.innerText = '$ ' + bag.price
+  
+          let designerh3 = document.createElement('h3')
+              designerh3.innerText = bag.designer
+  
+          let viewDiv = document.createElement('div')
+              viewDiv.className = 'view-button-div'
+  
+              let deleteBtn = document.createElement('button')
+              deleteBtn.classList = 'reg-button'
+              deleteBtn.innerText = 'Return'
+              deleteBtn.addEventListener('click', (e) => returnBag(bag, user, bagDiv))
+              
+          viewDiv.append(deleteBtn)
+          imageDiv.append(imageBag)
+          bagDiv.append(designerh3, imageDiv, priceP, viewDiv)
+          div.append(bagDiv)
+          })})}
               })
           }
           else
               alert('Balance too low')
           
+
           function decreaseUserBalance(){
-              
           let newBalance = user.balance - bag.price
           // if newBalance > 0 {patch request}
           let config2 = { method: 'PATCH', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
