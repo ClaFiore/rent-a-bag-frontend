@@ -369,13 +369,17 @@ document.addEventListener("DOMContentLoaded", () => {
           
 
           function decreaseUserBalance(){
-          let newBalance = user.balance - bag.price
+            fetch(usersURL + user.id)
+            .then(resp => resp.json())
+            .then(updatedBalanceUser => {
+                let newBalance = updatedBalanceUser.balance - bag.price
           // if newBalance > 0 {patch request}
           let config2 = { method: 'PATCH', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
                           body: JSON.stringify({balance: newBalance})}
           fetch(usersURL + user.id, config2)
           .then(res=>res.json())
           .then(updatedUser => {balanceBtn.innerText = 'Balance $ ' + newBalance})
+            }) 
           }
   
           function increaseListerBalance(){
@@ -824,20 +828,25 @@ document.addEventListener("DOMContentLoaded", () => {
                                     <input type="number" name="cvv" value="" placeholder="CVV"><br></br>
                                     <input type="submit" value="Submit" class='submit'>`
           containerDiv.append(addMoneyForm)
-          addMoneyForm.addEventListener('submit', () => {
-              event.preventDefault()
-              let additionalAmount = parseInt(event.target[0].value)
-              let userNewBalance = user.balance + additionalAmount
+          addMoneyForm.addEventListener('submit', (e) => {
+
+              e.preventDefault()
+
+              fetch(usersURL + user.id)
+            .then(resp => resp.json())
+            .then(upUser => {
+              let additionalAmount = parseInt(addMoneyForm.amount.value)
+              let userNewBalance = upUser.balance + additionalAmount
               balanceBtn.innerText = 'Balance $ ' + userNewBalance
               configObjPatch = {method: 'PATCH', headers: {'Content-Type': 'application/json', 'Accept': 'application/json'},
                                 body: JSON.stringify({balance: userNewBalance})}
-              fetch(usersURL + user.id, configObjPatch)
+              fetch(usersURL + upUser.id, configObjPatch)
               .then(res=>res.json())
               .then(updatedUser => {
                   containerDiv.innerHTML = ''
-                    getBags(user)
+                    getBags(updatedUser)
             })
-              
+            })     
           })
       }
   
